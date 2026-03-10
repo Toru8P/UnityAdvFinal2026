@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
+  - Buff
   layers:
   - Default
   - TransparentFX
@@ -59,6 +60,9 @@ TagManager:
     locked: 0
   - name: Character
     uniqueID: 3391701547
+    locked: 0
+  - name: Items
+    uniqueID: 3278784255
     locked: 0
   m_RenderingLayers:
   - Default

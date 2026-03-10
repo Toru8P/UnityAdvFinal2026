@@ -99,8 +99,6 @@ namespace _Code.MainGame.Enemy
             }
         
             StartCoroutine(SpawnEnemies());
-
-
         }
         
         private void OnDifficultyChanged(DifficultyPreset preset)

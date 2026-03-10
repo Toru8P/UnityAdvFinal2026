@@ -1,3 +1,5 @@
+using _Code.MainGame.Buff;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -44,7 +46,8 @@ namespace _Code.MainGame.Player
         private Animator _animator;
         private Vector2 _currentLightDir = Vector2.right;
 
-
+        [CanBeNull] private BuffAttachment _activeBuff;
+        
         private void Awake()
         {
             _col = GetComponent<Collider2D>();
@@ -69,6 +72,15 @@ namespace _Code.MainGame.Player
         {
             if (!_isAlive) return;
 
+            if (_activeBuff != null)
+            {
+                _activeBuff.Update(Time.deltaTime);
+                if (_activeBuff.IsExpired)
+                {
+                    _activeBuff = null;
+                }
+            }
+
             if (pauseAction && pauseAction.action.WasPressedThisFrame())
             {
                 onPausePressed?.Invoke();
@@ -79,7 +91,13 @@ namespace _Code.MainGame.Player
             _moveInput = Vector2.ClampMagnitude(_moveInput, 1f);
 
 
-            Vector2 delta = _moveInput * (moveSpeed * Time.deltaTime);
+            float speed = moveSpeed;
+            if (_activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost)
+            {
+                speed += _activeBuff.Value;
+            }
+            
+            Vector2 delta = _moveInput * (speed * Time.deltaTime);
             MoveWithCollision(delta);
 
             if (_moveInput.x != 0)
@@ -175,6 +193,16 @@ namespace _Code.MainGame.Player
             footstepSource.Play();
         }
 
+        public bool AttachBuff(BuffAttachment attachment)
+        {
+            if (_activeBuff == null)
+            {
+                _activeBuff = attachment;
+                return true;
+            }
+
+            return false;
+        }
         
     }
 }
