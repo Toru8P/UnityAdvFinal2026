@@ -1174,10 +1174,10 @@ RectTransform:
   - {fileID: 4084809203178702954}
   m_Father: {fileID: 4714935588448414513}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.73700005, y: 0.9534815}
-  m_AnchorMax: {x: 0.82245857, y: 0.98}
-  m_AnchoredPosition: {x: 0, y: -1}
-  m_SizeDelta: {x: -2, y: 2}
+  m_AnchorMin: {x: 0.89443755, y: 0.6471482}
+  m_AnchorMax: {x: 0.97800004, y: 0.6796296}
+  m_AnchoredPosition: {x: -0.5, y: -2}
+  m_SizeDelta: {x: 1, y: -4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7055711413259802467
 CanvasRenderer:
@@ -2581,6 +2581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c33e7629382b4b5c837d67fd19c942f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Code.UI.CanvasSwitcher
+  turnOnTutorial: 0
   startCanvas: {fileID: 8191529760394384068}
   tutorialCanvas: {fileID: 78153271334515650}
   gameCanvas: {fileID: 8838579092540864466}
@@ -4497,7 +4498,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4714935588448414513
 RectTransform:
   m_ObjectHideFlags: 0

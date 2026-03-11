@@ -4,6 +4,8 @@ namespace _Code.UI
 {
     public class CanvasSwitcher : MonoBehaviour
     {
+        [SerializeField] private bool turnOnTutorial = false;
+        
         [Header("General Menus")] 
         [SerializeField] private GameObject startCanvas;
         [SerializeField] private GameObject tutorialCanvas;
@@ -17,7 +19,7 @@ namespace _Code.UI
         {
             Reset();
             startCanvas?.SetActive(true);
-            tutorialCanvas?.SetActive(true);
+            if (turnOnTutorial) tutorialCanvas?.SetActive(true);
             gameCanvas?.SetActive(true);
         }
         

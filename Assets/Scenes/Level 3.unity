@@ -57983,7 +57983,7 @@ PrefabInstance:
     - target: {fileID: 127290390678300519, guid: 8d33c46e8d6d92d4fb509a060281d231,
         type: 3}
       propertyPath: spawnInterval
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 127290390678300519, guid: 8d33c46e8d6d92d4fb509a060281d231,
         type: 3}
@@ -58223,6 +58223,36 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3252860626428462646, guid: 059e37f9588a84c4dbd65565a1d6af06,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.8194792
+      objectReference: {fileID: 0}
+    - target: {fileID: 3252860626428462646, guid: 059e37f9588a84c4dbd65565a1d6af06,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.6796296
+      objectReference: {fileID: 0}
+    - target: {fileID: 3252860626428462646, guid: 059e37f9588a84c4dbd65565a1d6af06,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 142.9559
+      objectReference: {fileID: 0}
+    - target: {fileID: 3252860626428462646, guid: 059e37f9588a84c4dbd65565a1d6af06,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 95.8017
+      objectReference: {fileID: 0}
+    - target: {fileID: 3252860626428462646, guid: 059e37f9588a84c4dbd65565a1d6af06,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 92
+      objectReference: {fileID: 0}
+    - target: {fileID: 3252860626428462646, guid: 059e37f9588a84c4dbd65565a1d6af06,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 170
+      objectReference: {fileID: 0}
     - target: {fileID: 3862262061394310764, guid: 059e37f9588a84c4dbd65565a1d6af06,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -58330,8 +58360,8 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 2112877312}
   - {fileID: 1309889876}
-  - {fileID: 3015541100729240088}
   - {fileID: 727303285}
+  - {fileID: 3015541100729240088}
   - {fileID: 595013487}
   - {fileID: 676108085}
   - {fileID: 1126610751}
