@@ -57486,6 +57486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1309889876}
   - component: {fileID: 1309889875}
+  - component: {fileID: 1309889877}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -57522,6 +57523,20 @@ Transform:
   - {fileID: 771001233}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1309889877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309889874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9b9392a5b8da4438cbf4203deac978, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  groundTilemap: {fileID: 1125839891}
+  obstacleTilemap: {fileID: 771001235}
 --- !u!1 &1485415922
 GameObject:
   m_ObjectHideFlags: 0
