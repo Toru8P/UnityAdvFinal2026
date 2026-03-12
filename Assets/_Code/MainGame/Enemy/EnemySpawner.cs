@@ -21,6 +21,7 @@ namespace _Code.MainGame.Enemy
         [SerializeField] private float spawnInterval = 2f;
         [SerializeField] private int maxEnemies = 10; 
         [SerializeField] private Tilemap spawnZone;
+        [SerializeField] private Tilemap obstacleZone;
 
         [Header("Enemy Light Settings")]
         [SerializeField] private bool enemiesHaveLight = false;
@@ -95,6 +96,14 @@ namespace _Code.MainGame.Enemy
                 if (spawnZone.HasTile(cell))
                 {
                     availableCells.Add(cell);
+                }
+            }
+            
+            foreach (Vector3Int cell in obstacleZone.cellBounds.allPositionsWithin)
+            {
+                if (availableCells.Contains(cell))
+                {
+                    availableCells.Remove(cell);
                 }
             }
         

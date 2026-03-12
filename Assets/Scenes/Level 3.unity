@@ -57439,6 +57439,11 @@ PrefabInstance:
       propertyPath: spawnZone
       value: 
       objectReference: {fileID: 1125839891}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: obstacleZone
+      value: 
+      objectReference: {fileID: 771001235}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -57980,6 +57985,11 @@ PrefabInstance:
       propertyPath: currentSpeed
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 127290390678300519, guid: 8d33c46e8d6d92d4fb509a060281d231,
+        type: 3}
+      propertyPath: obstacleZone
+      value: 
+      objectReference: {fileID: 771001235}
     - target: {fileID: 127290390678300519, guid: 8d33c46e8d6d92d4fb509a060281d231,
         type: 3}
       propertyPath: spawnInterval

@@ -17,6 +17,7 @@ namespace _Code.MainGame.Buff
         [SerializeField] private int maxBuffs = 5;
 
         [SerializeField] private Tilemap spawnZone;
+        [SerializeField] private Tilemap obstacleZone;
         private List<Vector3Int> availableCells;
 
         private int _spawnCounter;
@@ -32,6 +33,15 @@ namespace _Code.MainGame.Buff
                 if (spawnZone.HasTile(cell))
                 {
                     availableCells.Add(cell);
+                }
+            }
+            
+                        
+            foreach (Vector3Int cell in obstacleZone.cellBounds.allPositionsWithin)
+            {
+                if (availableCells.Contains(cell))
+                {
+                    availableCells.Remove(cell);
                 }
             }
             
