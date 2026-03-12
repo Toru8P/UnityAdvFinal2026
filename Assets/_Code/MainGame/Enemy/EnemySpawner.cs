@@ -54,7 +54,7 @@ namespace _Code.MainGame.Enemy
         {
             if (enemyLowPrefab && enemyMidPrefab && enemyHiPrefab && target)
             {
-                Vector3Int randomCell = availableCells[Random.Range(0, availableCells.Count)];
+                Vector3Int randomCell = availableCells[Random.Range(0, availableCells.Count-1)];
                 
                 GameObject enemyPrefab = null;
                 switch (currentSpeed)
@@ -101,7 +101,7 @@ namespace _Code.MainGame.Enemy
             
             foreach (Vector3Int cell in obstacleZone.cellBounds.allPositionsWithin)
             {
-                if (availableCells.Contains(cell))
+                if (obstacleZone.HasTile(cell) && availableCells.Contains(cell))
                 {
                     availableCells.Remove(cell);
                 }

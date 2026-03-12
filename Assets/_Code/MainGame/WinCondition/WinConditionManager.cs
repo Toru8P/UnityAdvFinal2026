@@ -11,6 +11,8 @@ namespace _Code.MainGame.WinCondition
         [SerializeField] private UnityEvent winConditionEvent = new UnityEvent();
         [SerializeField] private UnityEvent loseConditionEvent = new UnityEvent();
 
+        [SerializeField] private AudioSource levelMusic;
+        
         private Timer _timer;
 
         private bool _isPlaying = true;
@@ -28,6 +30,7 @@ namespace _Code.MainGame.WinCondition
             if (!_isPlaying) return;
             _isPlaying = false;
             Debug.Log("OnWinCondition");
+            levelMusic?.Stop();
             winConditionEvent.Invoke();
         }
 
@@ -36,6 +39,7 @@ namespace _Code.MainGame.WinCondition
             if (!_isPlaying) return;
             _isPlaying = false;
             Debug.Log("OnLoseCondition " + hitPosition);
+            levelMusic?.Stop();
             loseConditionEvent.Invoke();
         }
     }
