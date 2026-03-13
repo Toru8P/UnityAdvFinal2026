@@ -39,7 +39,7 @@ namespace _Code.MainGame.Buff
                         
             foreach (Vector3Int cell in obstacleZone.cellBounds.allPositionsWithin)
             {
-                if (availableCells.Contains(cell))
+                if (obstacleZone.HasTile(cell) && availableCells.Contains(cell))
                 {
                     availableCells.Remove(cell);
                 }
