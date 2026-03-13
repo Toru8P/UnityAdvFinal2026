@@ -89,10 +89,9 @@ namespace _Code.MainGame.Player
             
             _moveInput = moveAction.action.ReadValue<Vector2>();
             _moveInput = Vector2.ClampMagnitude(_moveInput, 1f);
-
-
+            bool hasSpeedBoost = _activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost;
             float speed = moveSpeed;
-            if (_activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost)
+            if (hasSpeedBoost)
             {
                 speed += _activeBuff.Value;
             }
@@ -124,6 +123,7 @@ namespace _Code.MainGame.Player
             if (_animator)
             {
                 _animator.SetBool("Walk", _moveInput != Vector2.zero);
+                _animator.SetBool("SpeedBoost", hasSpeedBoost);
             }
             
 
@@ -198,6 +198,10 @@ namespace _Code.MainGame.Player
             if (_activeBuff == null)
             {
                 _activeBuff = attachment;
+                if (_animator && attachment.Type == BuffType.SpeedBoost)
+                {
+                    _animator.SetBool("SpeedBoost", true);
+                }
                 return true;
             }
 
