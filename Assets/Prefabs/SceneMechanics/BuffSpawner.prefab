@@ -51,6 +51,8 @@ MonoBehaviour:
     Chance: 33
   - Setup: {fileID: 11400000, guid: 1a21f28024a934346a8104c3effb5861, type: 2}
     Chance: 33
+  - Setup: {fileID: 11400000, guid: 2634deef8994d4a32a67687b2a58f03d, type: 2}
+    Chance: 25
   buffPrefab: {fileID: 1645981206171040990, guid: ff50fef2beea119468e6c3968bb2c25a,
     type: 3}
   spawnInterval: 5

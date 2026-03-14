@@ -27,6 +27,7 @@ namespace _Code.MainGame.Player
         
         [Header("Visual Settings")]
         [SerializeField] private SpriteRenderer skinRenderer;
+        [SerializeField] private GameObject immunityBubble;
         
         [Header("Light Settings")]
         [SerializeField] private bool turnOnLight = true;
@@ -55,6 +56,10 @@ namespace _Code.MainGame.Player
             if (turnOnLight && lights)
             {
                 lights.enabled = true;
+            }
+            if (immunityBubble)
+            {
+                immunityBubble.SetActive(false);
             }
         }
 
@@ -89,7 +94,9 @@ namespace _Code.MainGame.Player
             
             _moveInput = moveAction.action.ReadValue<Vector2>();
             _moveInput = Vector2.ClampMagnitude(_moveInput, 1f);
+
             bool hasSpeedBoost = _activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost;
+            bool hasImmunity = _activeBuff != null && _activeBuff.Type == BuffType.Immunity;
             float speed = moveSpeed;
             if (hasSpeedBoost)
             {
@@ -124,6 +131,12 @@ namespace _Code.MainGame.Player
             {
                 _animator.SetBool("Walk", _moveInput != Vector2.zero);
                 _animator.SetBool("SpeedBoost", hasSpeedBoost);
+                _animator.SetBool("Immunity", hasImmunity);
+            }
+
+            if (immunityBubble)
+            {
+                immunityBubble.SetActive(hasImmunity);
             }
             
 
@@ -147,6 +160,13 @@ namespace _Code.MainGame.Player
         {
             if (!_isAlive) return;
             if (!other.CompareTag("Enemy")) return;
+
+            if (_activeBuff != null && _activeBuff.Type == BuffType.Immunity)
+            {
+                Destroy(other.gameObject);
+                return;
+            }
+
             Vector2 hitPoint = other.ClosestPoint(transform.position);
             channel.NotifyPlayerDied(hitPoint);
             moveAction.action.Disable();
