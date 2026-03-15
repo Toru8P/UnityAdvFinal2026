@@ -27,7 +27,9 @@ namespace _Code.MainGame.Player
         
         [Header("Visual Settings")]
         [SerializeField] private SpriteRenderer skinRenderer;
-        [SerializeField] private GameObject immunityBubble;
+        [Header("Immunity Buff")]
+        [Tooltip("Sprite shown around the player while immunity is active. Assign bubble sprite directly; a child with SpriteRenderer is created at runtime.")]
+        [SerializeField] private Sprite immunityBubbleSprite;
         
         [Header("Light Settings")]
         [SerializeField] private bool turnOnLight = true;
@@ -48,19 +50,64 @@ namespace _Code.MainGame.Player
         private Vector2 _currentLightDir = Vector2.right;
 
         [CanBeNull] private BuffAttachment _activeBuff;
+        [CanBeNull] private BuffAttachment _immunityBuff;
+        private GameObject _immunityBubble;
         
         private void Awake()
         {
             _col = GetComponent<Collider2D>();
             _animator = GetComponent<Animator>();
+            ResolveImmunityBubble();
             if (turnOnLight && lights)
             {
                 lights.enabled = true;
             }
-            if (immunityBubble)
+        }
+
+        private void ResolveImmunityBubble()
+        {
+            var bubble = transform.Find("ImmunityBubble");
+            if (bubble == null)
+                bubble = FindInChildren(transform, "ImmunityBubble");
+            if (bubble != null)
             {
-                immunityBubble.SetActive(false);
+                _immunityBubble = bubble.gameObject;
+                return;
             }
+            if (immunityBubbleSprite != null)
+            {
+                _immunityBubble = CreateImmunityBubble();
+                if (_immunityBubble != null)
+                    _immunityBubble.SetActive(false);
+            }
+        }
+
+        private GameObject CreateImmunityBubble()
+        {
+            if (immunityBubbleSprite == null) return null;
+            var go = new GameObject("ImmunityBubble");
+            go.transform.SetParent(transform, false);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            go.transform.localScale = Vector3.one * 1.2f;
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sprite = immunityBubbleSprite;
+            sr.color = new Color(1f, 1f, 1f, 0.5f);
+            sr.sortingOrder = 100;
+            if (skinRenderer != null)
+                sr.sortingLayerID = skinRenderer.sortingLayerID;
+            return go;
+        }
+
+        private static Transform FindInChildren(Transform parent, string name)
+        {
+            if (parent.name == name) return parent;
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var found = FindInChildren(parent.GetChild(i), name);
+                if (found != null) return found;
+            }
+            return null;
         }
 
         private void OnEnable()
@@ -81,10 +128,17 @@ namespace _Code.MainGame.Player
             {
                 _activeBuff.Update(Time.deltaTime);
                 if (_activeBuff.IsExpired)
-                {
                     _activeBuff = null;
-                }
             }
+            if (_immunityBuff != null)
+            {
+                _immunityBuff.Update(Time.deltaTime);
+                if (_immunityBuff.IsExpired)
+                    _immunityBuff = null;
+            }
+            bool hasImmunity = _immunityBuff != null && !_immunityBuff.IsExpired;
+            if (_immunityBubble != null)
+                _immunityBubble.SetActive(hasImmunity);
 
             if (pauseAction && pauseAction.action.WasPressedThisFrame())
             {
@@ -94,9 +148,7 @@ namespace _Code.MainGame.Player
             
             _moveInput = moveAction.action.ReadValue<Vector2>();
             _moveInput = Vector2.ClampMagnitude(_moveInput, 1f);
-
             bool hasSpeedBoost = _activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost;
-            bool hasImmunity = _activeBuff != null && _activeBuff.Type == BuffType.Immunity;
             float speed = moveSpeed;
             if (hasSpeedBoost)
             {
@@ -131,12 +183,6 @@ namespace _Code.MainGame.Player
             {
                 _animator.SetBool("Walk", _moveInput != Vector2.zero);
                 _animator.SetBool("SpeedBoost", hasSpeedBoost);
-                _animator.SetBool("Immunity", hasImmunity);
-            }
-
-            if (immunityBubble)
-            {
-                immunityBubble.SetActive(hasImmunity);
             }
             
 
@@ -160,13 +206,11 @@ namespace _Code.MainGame.Player
         {
             if (!_isAlive) return;
             if (!other.CompareTag("Enemy")) return;
-
-            if (_activeBuff != null && _activeBuff.Type == BuffType.Immunity)
+            if (_immunityBuff != null && !_immunityBuff.IsExpired)
             {
                 Destroy(other.gameObject);
                 return;
             }
-
             Vector2 hitPoint = other.ClosestPoint(transform.position);
             channel.NotifyPlayerDied(hitPoint);
             moveAction.action.Disable();
@@ -215,16 +259,26 @@ namespace _Code.MainGame.Player
 
         public bool AttachBuff(BuffAttachment attachment)
         {
+            if (attachment.Type == BuffType.Immunity)
+            {
+                if (_immunityBuff == null)
+                {
+                    _immunityBuff = attachment;
+                    if (_immunityBubble == null)
+                        ResolveImmunityBubble();
+                    if (_immunityBubble != null)
+                        _immunityBubble.SetActive(true);
+                    return true;
+                }
+                return false;
+            }
             if (_activeBuff == null)
             {
                 _activeBuff = attachment;
                 if (_animator && attachment.Type == BuffType.SpeedBoost)
-                {
                     _animator.SetBool("SpeedBoost", true);
-                }
                 return true;
             }
-
             return false;
         }
         

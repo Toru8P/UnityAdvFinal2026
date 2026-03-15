@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -9,8 +9,10 @@ namespace _Code.MainGame.Buff
     public class BuffSpawner : MonoBehaviour
     {
         [Header("Buff Prefabs")]
-        [SerializeField] private List<BuffChance> _buffSetups;
+        [Tooltip("Default prefab for speed buffs (e.g. FishBuff).")]
         [SerializeField] private GameObject buffPrefab;
+        [Tooltip("Setup + chance + optional prefab override (e.g. ImmunityBuff with goldenfish for Immunity).")]
+        [SerializeField] private List<BuffChance> _buffSetups;
 
         [Header("Spawn Settings")]
         [SerializeField] private float spawnInterval = 5f;
@@ -71,6 +73,7 @@ namespace _Code.MainGame.Buff
 
             float roll = Random.Range(0f, totalChance);
             BuffSetup selectedSetup = null;
+            GameObject prefabToSpawn = buffPrefab;
 
             foreach (BuffChance buffChance in _buffSetups)
             {
@@ -80,16 +83,17 @@ namespace _Code.MainGame.Buff
                 if (roll <= 0f)
                 {
                     selectedSetup = buffChance.Setup;
+                    prefabToSpawn = buffChance.PrefabOverride != null ? buffChance.PrefabOverride : buffPrefab;
                     break;
                 }
             }
 
-            if (selectedSetup == null) return;
+            if (selectedSetup == null || prefabToSpawn == null) return;
 
             Vector3Int randomCell = availableCells[Random.Range(0, availableCells.Count)];
             Vector3 spawnPosition = spawnZone.GetCellCenterWorld(randomCell);
 
-            GameObject createdBuff = Instantiate(buffPrefab, spawnPosition, Quaternion.identity);
+            GameObject createdBuff = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             createdBuff.GetComponent<Buff>().Initialize(selectedSetup);
 
             _spawnCounter++;
@@ -98,8 +102,12 @@ namespace _Code.MainGame.Buff
         [Serializable]
         private class BuffChance
         {
+            [Tooltip("Buff data (type, duration, value).")]
             public BuffSetup Setup;
+            [Tooltip("Spawn weight (higher = more likely).")]
             public float Chance;
+            [Tooltip("Optional: prefab for this buff (e.g. ImmunityBuff with goldenfish). If empty, uses default Buff Prefab.")]
+            public GameObject PrefabOverride;
 
             public BuffChance(BuffSetup setup, float chance)
             {

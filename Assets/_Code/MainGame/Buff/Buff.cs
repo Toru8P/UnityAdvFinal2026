@@ -11,11 +11,14 @@ namespace _Code.MainGame.Buff
 
         public void Initialize(BuffSetup setup)
         {
-            if (setup)
+            if (!setup) return;
+            buffType = setup.buffType;
+            duration = setup.duration;
+            value = setup.value;
+            if (setup.iconSprite != null)
             {
-                this.buffType = setup.buffType;
-                this.duration = setup.duration;
-                this.value = setup.value;
+                var sr = GetComponent<SpriteRenderer>();
+                if (sr) sr.sprite = setup.iconSprite;
             }
         }
         
