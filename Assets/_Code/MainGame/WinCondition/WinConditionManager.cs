@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using _Code.UI.Save;
 
 namespace _Code.MainGame.WinCondition
 {
@@ -31,6 +33,7 @@ namespace _Code.MainGame.WinCondition
             _isPlaying = false;
             Debug.Log("OnWinCondition");
             levelMusic?.Stop();
+            SaveManager.CompleteLevel(SceneManager.GetActiveScene().buildIndex);
             winConditionEvent.Invoke();
         }
 

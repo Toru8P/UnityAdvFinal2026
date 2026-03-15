@@ -28,8 +28,8 @@ namespace _Code.MainGame.Player
         [Header("Visual Settings")]
         [SerializeField] private SpriteRenderer skinRenderer;
         [Header("Immunity Buff")]
-        [Tooltip("Sprite shown around the player while immunity is active. Assign bubble sprite directly; a child with SpriteRenderer is created at runtime.")]
-        [SerializeField] private Sprite immunityBubbleSprite;
+        [Tooltip("Prefab shown around the player while immunity is active. Assign Prefabs/Buff/ImmunityBubble.")]
+        [SerializeField] private GameObject immunityBubblePrefab;
         
         [Header("Light Settings")]
         [SerializeField] private bool turnOnLight = true;
@@ -74,29 +74,19 @@ namespace _Code.MainGame.Player
                 _immunityBubble = bubble.gameObject;
                 return;
             }
-            if (immunityBubbleSprite != null)
+            if (immunityBubblePrefab != null)
             {
-                _immunityBubble = CreateImmunityBubble();
-                if (_immunityBubble != null)
-                    _immunityBubble.SetActive(false);
+                var go = Instantiate(immunityBubblePrefab, transform);
+                go.name = "ImmunityBubble";
+                go.transform.localPosition = Vector3.zero;
+                go.transform.localRotation = Quaternion.identity;
+                go.transform.localScale = Vector3.one;
+                var sr = go.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                    sr.color = new Color(1f, 1f, 1f, 0.5f);
+                _immunityBubble = go;
+                go.SetActive(false);
             }
-        }
-
-        private GameObject CreateImmunityBubble()
-        {
-            if (immunityBubbleSprite == null) return null;
-            var go = new GameObject("ImmunityBubble");
-            go.transform.SetParent(transform, false);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            go.transform.localScale = Vector3.one * 1.2f;
-            var sr = go.AddComponent<SpriteRenderer>();
-            sr.sprite = immunityBubbleSprite;
-            sr.color = new Color(1f, 1f, 1f, 0.5f);
-            sr.sortingOrder = 100;
-            if (skinRenderer != null)
-                sr.sortingLayerID = skinRenderer.sortingLayerID;
-            return go;
         }
 
         private static Transform FindInChildren(Transform parent, string name)
