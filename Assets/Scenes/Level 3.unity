@@ -58111,6 +58111,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: channel
+      value: 
+      objectReference: {fileID: 1485415924}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onPausePressed.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onPausePressed.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8484836336175983451, guid: 16b17038ce8267f429636387186729f1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -58452,6 +58467,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514955954326754057, guid: 059e37f9588a84c4dbd65565a1d6af06,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00024414062
       objectReference: {fileID: 0}
     - target: {fileID: 3252860626428462646, guid: 059e37f9588a84c4dbd65565a1d6af06,
         type: 3}
