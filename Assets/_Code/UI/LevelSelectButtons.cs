@@ -2,9 +2,7 @@ using UnityEngine;
 
 namespace _Code.UI
 {
-    /// <summary>
-    /// Parameterless entry points for level buttons so they can be wired in the editor or by tools.
-    /// </summary>
+    // Parameterless entry points for level buttons so they can be wired in the editor or by tools.
     public class LevelSelectButtons : MonoBehaviour
     {
         [SerializeField] private SceneLoader sceneLoader;
