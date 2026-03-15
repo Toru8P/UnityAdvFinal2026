@@ -1,3 +1,16 @@
 {
-	"name": "UIDef"
+    "name": "UIDef",
+    "rootNamespace": "",
+    "references": [
+        "GUID:300f7567f9351974bb733b6a83150dde"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

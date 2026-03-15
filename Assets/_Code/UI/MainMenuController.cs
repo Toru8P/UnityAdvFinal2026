@@ -1,12 +1,9 @@
+using _Code.UI.Save;
 using UnityEngine;
 using UnityEngine.UI;
-using _Code.UI.Save;
 
 namespace _Code.UI
 {
-    /// <summary>
-    /// Shows level select panel and configures level buttons based on saved progress.
-    /// </summary>
     public class MainMenuController : MonoBehaviour
     {
         [Header("Level select")]
@@ -19,9 +16,9 @@ namespace _Code.UI
         private void Awake()
         {
             // Hide Level Select until we know progress; avoids showing it before Start.
-            if (levelSelectButton != null)
+            if (levelSelectButton)
                 levelSelectButton.gameObject.SetActive(false);
-            if (levelSelectPanel != null)
+            if (levelSelectPanel)
                 levelSelectPanel.SetActive(false);
         }
 
@@ -31,14 +28,14 @@ namespace _Code.UI
             int highest = progress.HighestCompletedLevel;
 
             // Show Level Select button only when at least one level has been completed.
-            if (levelSelectButton != null)
+            if (levelSelectButton)
                 levelSelectButton.gameObject.SetActive(highest >= 1);
 
             SetLevelButtonInteractable(level1Button, progress, 1);
             SetLevelButtonInteractable(level2Button, progress, 2);
             SetLevelButtonInteractable(level3Button, progress, 3);
 
-            if (levelSelectButton != null && levelSelectPanel != null)
+            if (levelSelectButton && levelSelectPanel)
                 levelSelectButton.onClick.AddListener(() => levelSelectPanel.SetActive(true));
         }
 
