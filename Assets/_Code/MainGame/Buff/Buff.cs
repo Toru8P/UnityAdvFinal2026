@@ -15,11 +15,6 @@ namespace _Code.MainGame.Buff
             buffType = setup.buffType;
             duration = setup.duration;
             value = setup.value;
-            if (setup.iconSprite != null)
-            {
-                var sr = GetComponent<SpriteRenderer>();
-                if (sr) sr.sprite = setup.iconSprite;
-            }
         }
         
         private void OnCollisionEnter2D(Collision2D other)

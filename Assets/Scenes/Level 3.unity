@@ -57439,12 +57439,12 @@ PrefabInstance:
         type: 3}
       propertyPath: spawnZone
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1125839891}
     - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
         type: 3}
       propertyPath: obstacleZone
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 771001235}
     - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
         type: 3}
       propertyPath: spawnInterval

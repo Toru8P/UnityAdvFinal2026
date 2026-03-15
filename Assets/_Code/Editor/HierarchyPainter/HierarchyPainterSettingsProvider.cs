@@ -1,8 +1,8 @@
 // Assets/Editor/HierarchyPainterSettingsProvider.cs
-using UnityEditor;
-using UnityEngine;
 
-namespace _Scripts.Editor.HierarchyPainter
+using UnityEditor;
+
+namespace _Code.Editor.HierarchyPainter
 {
     static class HierarchyPainterSettingsProvider
     {

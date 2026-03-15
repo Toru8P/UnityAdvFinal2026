@@ -8,7 +8,5 @@ namespace _Code.MainGame.Buff
         public BuffType buffType;
         public float duration;
         public float value;
-        [Tooltip("Optional icon for pickable (e.g. goldenfish for Immunity).")]
-        public Sprite iconSprite;
     }
 }

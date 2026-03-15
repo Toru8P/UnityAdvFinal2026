@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
@@ -11,8 +12,9 @@ namespace _Code.MainGame.Buff
         [Header("Buff Prefabs")]
         [Tooltip("Default prefab for speed buffs (e.g. FishBuff).")]
         [SerializeField] private GameObject buffPrefab;
+        [FormerlySerializedAs("_buffSetups")]
         [Tooltip("Setup + chance + optional prefab override (e.g. ImmunityBuff with goldenfish for Immunity).")]
-        [SerializeField] private List<BuffChance> _buffSetups;
+        [SerializeField] private List<BuffChance> buffSetups;
 
         [Header("Spawn Settings")]
         [SerializeField] private float spawnInterval = 5f;
@@ -20,30 +22,30 @@ namespace _Code.MainGame.Buff
 
         [SerializeField] private Tilemap spawnZone;
         [SerializeField] private Tilemap obstacleZone;
-        private List<Vector3Int> availableCells;
+        private List<Vector3Int> _availableCells;
 
         private int _spawnCounter;
         private bool _continueSpawning = true;
 
         private void Start()
         {
-            availableCells = new List<Vector3Int>();
+            _availableCells = new List<Vector3Int>();
             BoundsInt bounds = spawnZone.cellBounds;
 
             foreach (Vector3Int cell in bounds.allPositionsWithin)
             {
                 if (spawnZone.HasTile(cell))
                 {
-                    availableCells.Add(cell);
+                    _availableCells.Add(cell);
                 }
             }
             
                         
             foreach (Vector3Int cell in obstacleZone.cellBounds.allPositionsWithin)
             {
-                if (obstacleZone.HasTile(cell) && availableCells.Contains(cell))
+                if (obstacleZone.HasTile(cell) && _availableCells.Contains(cell))
                 {
-                    availableCells.Remove(cell);
+                    _availableCells.Remove(cell);
                 }
             }
             
@@ -59,13 +61,13 @@ namespace _Code.MainGame.Buff
         private void SpawnBuff()
         {
             if (_spawnCounter >= maxBuffs || !_continueSpawning) return;
-            if (availableCells == null || availableCells.Count == 0) return;
-            if (_buffSetups == null || _buffSetups.Count == 0) return;
+            if (_availableCells == null || _availableCells.Count == 0) return;
+            if (buffSetups == null || buffSetups.Count == 0) return;
 
             float totalChance = 0f;
-            foreach (BuffChance buffChance in _buffSetups)
+            foreach (BuffChance buffChance in buffSetups)
             {
-                if (buffChance.Setup != null && buffChance.Chance > 0f)
+                if (buffChance.Setup && buffChance.Chance > 0f)
                     totalChance += buffChance.Chance;
             }
 
@@ -75,9 +77,9 @@ namespace _Code.MainGame.Buff
             BuffSetup selectedSetup = null;
             GameObject prefabToSpawn = buffPrefab;
 
-            foreach (BuffChance buffChance in _buffSetups)
+            foreach (BuffChance buffChance in buffSetups)
             {
-                if (buffChance.Setup == null || buffChance.Chance <= 0f) continue;
+                if (!buffChance.Setup || buffChance.Chance <= 0f) continue;
 
                 roll -= buffChance.Chance;
                 if (roll <= 0f)
@@ -88,9 +90,9 @@ namespace _Code.MainGame.Buff
                 }
             }
 
-            if (selectedSetup == null || prefabToSpawn == null) return;
+            if (!selectedSetup || !prefabToSpawn) return;
 
-            Vector3Int randomCell = availableCells[Random.Range(0, availableCells.Count)];
+            Vector3Int randomCell = _availableCells[Random.Range(0, _availableCells.Count)];
             Vector3 spawnPosition = spawnZone.GetCellCenterWorld(randomCell);
 
             GameObject createdBuff = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);

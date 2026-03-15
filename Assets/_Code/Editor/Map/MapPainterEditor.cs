@@ -26,7 +26,7 @@ namespace _Code.Editor.Map
                 BuildPreview(mapPainter);
             }
 
-            if (_preview != null)
+            if (_preview)
             {
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Map Preview", EditorStyles.boldLabel);
@@ -49,14 +49,14 @@ namespace _Code.Editor.Map
             Tilemap ground = mapPainter.GroundTilemap;
             Tilemap obstacle = mapPainter.ObstacleTilemap;
 
-            if (ground == null && obstacle == null)
+            if (!ground && !obstacle)
             {
                 _preview = null;
                 return;
             }
 
-            if (ground != null) ground.CompressBounds();
-            if (obstacle != null) obstacle.CompressBounds();
+            if (ground) ground.CompressBounds();
+            if (obstacle) obstacle.CompressBounds();
 
             BoundsInt bounds = GetCombinedBounds(ground, obstacle);
 
@@ -88,10 +88,10 @@ namespace _Code.Editor.Map
 
                     Color color = clear;
 
-                    if (ground != null && ground.HasTile(cell))
+                    if (ground && ground.HasTile(cell))
                         color = Color.green;
 
-                    if (obstacle != null && obstacle.HasTile(cell))
+                    if (obstacle && obstacle.HasTile(cell))
                         color = Color.red;
 
                     _preview.SetPixel(x, y, color);
@@ -103,8 +103,8 @@ namespace _Code.Editor.Map
 
         private BoundsInt GetCombinedBounds(Tilemap a, Tilemap b)
         {
-            bool hasA = a != null;
-            bool hasB = b != null;
+            bool hasA = a;
+            bool hasB = b;
 
             if (hasA && !hasB) return a.cellBounds;
             if (!hasA && hasB) return b.cellBounds;

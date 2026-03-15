@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
-namespace _Scripts.Editor.HierarchyPainter
+namespace _Code.Editor.HierarchyPainter
 {
     [FilePath("ProjectSettings/HierarchyPainterSettings.asset", FilePathAttribute.Location.ProjectFolder)]
     public class HierarchyPainterSettings : ScriptableSingleton<HierarchyPainterSettings>
