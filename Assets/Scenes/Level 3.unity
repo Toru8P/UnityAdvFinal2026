@@ -58111,11 +58111,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
-        type: 3}
-      propertyPath: channel
-      value: 
-      objectReference: {fileID: 1485415924}
     - target: {fileID: 8484836336175983451, guid: 16b17038ce8267f429636387186729f1,
         type: 3}
       propertyPath: m_LocalPosition.x
