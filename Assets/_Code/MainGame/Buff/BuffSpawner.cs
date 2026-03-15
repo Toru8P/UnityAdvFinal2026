@@ -9,9 +9,6 @@ namespace _Code.MainGame.Buff
 {
     public class BuffSpawner : MonoBehaviour
     {
-        [Header("Buff Prefabs")]
-        [Tooltip("Default prefab for speed buffs (e.g. FishBuff).")]
-        [SerializeField] private GameObject buffPrefab;
         [FormerlySerializedAs("_buffSetups")]
         [Tooltip("Setup + chance + optional prefab override (e.g. ImmunityBuff with goldenfish for Immunity).")]
         [SerializeField] private List<BuffChance> buffSetups;
@@ -74,31 +71,31 @@ namespace _Code.MainGame.Buff
             if (totalChance <= 0f) return;
 
             float roll = Random.Range(0f, totalChance);
-            BuffSetup selectedSetup = null;
-            GameObject prefabToSpawn = buffPrefab;
 
-            foreach (BuffChance buffChance in buffSetups)
+            foreach (BuffChance buff in buffSetups)
             {
-                if (!buffChance.Setup || buffChance.Chance <= 0f) continue;
+                if (!buff.Setup || buff.Chance <= 0f) continue;
 
-                roll -= buffChance.Chance;
+                roll -= buff.Chance;
                 if (roll <= 0f)
                 {
-                    selectedSetup = buffChance.Setup;
-                    prefabToSpawn = buffChance.PrefabOverride != null ? buffChance.PrefabOverride : buffPrefab;
+                    if (SpawnAtTile(buff.PrefabOverride, buff.Setup)) _spawnCounter++;
                     break;
                 }
             }
-
-            if (!selectedSetup || !prefabToSpawn) return;
-
+        }
+        
+        private bool SpawnAtTile(GameObject prefabToSpawn, BuffSetup selectedSetup)
+        {
+            if (!prefabToSpawn) return false;
+            if (!selectedSetup) return false;
+            
             Vector3Int randomCell = _availableCells[Random.Range(0, _availableCells.Count)];
             Vector3 spawnPosition = spawnZone.GetCellCenterWorld(randomCell);
 
             GameObject createdBuff = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             createdBuff.GetComponent<Buff>().Initialize(selectedSetup);
-
-            _spawnCounter++;
+            return true;
         }
         
         [Serializable]
