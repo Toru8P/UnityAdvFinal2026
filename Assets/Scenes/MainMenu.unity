@@ -1865,8 +1865,8 @@ MonoBehaviour:
   levelSelectPanel: {fileID: 1110132079}
   levelSelectButton: {fileID: 2084341936}
   level1Button: {fileID: 1771938345}
-  level2Button: {fileID: 0}
-  level3Button: {fileID: 0}
+  level2Button: {fileID: 3900975}
+  level3Button: {fileID: 575998709}
 --- !u!114 &1999999003
 MonoBehaviour:
   m_ObjectHideFlags: 0
