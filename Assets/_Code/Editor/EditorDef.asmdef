@@ -1,16 +1,17 @@
 {
-    "name": "UIDef",
+    "name": "EditorDef",
     "rootNamespace": "",
     "references": [
-        "GUID:300f7567f9351974bb733b6a83150dde",
-        "CoreDef"
+        "MainGameDef"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [],
-    "autoReferenced": true,
+    "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false

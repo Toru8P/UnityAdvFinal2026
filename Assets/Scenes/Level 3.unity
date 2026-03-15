@@ -57433,7 +57433,7 @@ PrefabInstance:
     - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
         type: 3}
       propertyPath: maxBuffs
-      value: 15
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
         type: 3}
@@ -57445,6 +57445,100 @@ PrefabInstance:
       propertyPath: obstacleZone
       value: 
       objectReference: {fileID: 771001235}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: spawnInterval
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[3].Setup
+      value: 
+      objectReference: {fileID: 11400000, guid: 2634deef8994d4a32a67687b2a58f03d,
+        type: 2}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[4].Setup
+      value: 
+      objectReference: {fileID: 11400000, guid: 1c4f70ac68e2a4fec9e86483a92797b3,
+        type: 2}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[5].Setup
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f0688fd9f28c41c6915faa613a17cad,
+        type: 2}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[0].Chance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[1].Chance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[2].Chance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[3].Chance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[4].Chance
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[5].Chance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[0].PrefabOverride
+      value: 
+      objectReference: {fileID: 1645981206171040990, guid: ff50fef2beea119468e6c3968bb2c25a,
+        type: 3}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[1].PrefabOverride
+      value: 
+      objectReference: {fileID: 1645981206171040990, guid: ff50fef2beea119468e6c3968bb2c25a,
+        type: 3}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[2].PrefabOverride
+      value: 
+      objectReference: {fileID: 1645981206171040990, guid: ff50fef2beea119468e6c3968bb2c25a,
+        type: 3}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[3].PrefabOverride
+      value: 
+      objectReference: {fileID: 1645981206171040991, guid: 879608edd813c4ba5ad6192f53930319,
+        type: 3}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[4].PrefabOverride
+      value: 
+      objectReference: {fileID: 1645981206171040991, guid: 879608edd813c4ba5ad6192f53930319,
+        type: 3}
+    - target: {fileID: 8301942497348957201, guid: 2aae5eb80bb3ee647bad717781b2d1b5,
+        type: 3}
+      propertyPath: _buffSetups.Array.data[5].PrefabOverride
+      value: 
+      objectReference: {fileID: 1645981206171040991, guid: 879608edd813c4ba5ad6192f53930319,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -58022,6 +58116,16 @@ PrefabInstance:
       propertyPath: channel
       value: 
       objectReference: {fileID: 1485415924}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onPausePressed.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onPausePressed.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8484836336175983451, guid: 16b17038ce8267f429636387186729f1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -58363,6 +58467,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514955954326754057, guid: 059e37f9588a84c4dbd65565a1d6af06,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00024414062
       objectReference: {fileID: 0}
     - target: {fileID: 3252860626428462646, guid: 059e37f9588a84c4dbd65565a1d6af06,
         type: 3}

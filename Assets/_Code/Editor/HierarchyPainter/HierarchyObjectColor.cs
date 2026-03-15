@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace _Scripts.Editor.HierarchyPainter
+namespace _Code.Editor.HierarchyPainter
 {
     [InitializeOnLoad]
     public class HierarchyObjectColor

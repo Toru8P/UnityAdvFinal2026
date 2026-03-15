@@ -27,6 +27,9 @@ namespace _Code.MainGame.Player
         
         [Header("Visual Settings")]
         [SerializeField] private SpriteRenderer skinRenderer;
+        [Header("Immunity Buff")]
+        [Tooltip("Prefab shown around the player while immunity is active. Assign Prefabs/Buff/ImmunityBubble.")]
+        [SerializeField] private GameObject immunityBubble;
         
         [Header("Light Settings")]
         [SerializeField] private bool turnOnLight = true;
@@ -74,11 +77,25 @@ namespace _Code.MainGame.Player
 
             if (_activeBuff != null)
             {
-                _activeBuff.Update(Time.deltaTime);
-                if (_activeBuff.IsExpired)
+                switch (_activeBuff.Type)
                 {
-                    _activeBuff = null;
+                    case BuffType.Immunity:
+                        if (_animator) _animator.SetBool("SpeedBoost", false);
+                        if (immunityBubble) immunityBubble.SetActive(true);
+                        break;
+                    case BuffType.SpeedBoost:
+                        if (_animator) _animator.SetBool("SpeedBoost", true);
+                        if (immunityBubble) immunityBubble.SetActive(false);
+                        break;
                 }
+                
+                _activeBuff.Update(Time.deltaTime);
+                if (_activeBuff.IsExpired) _activeBuff = null;
+            }
+            else
+            {
+                if (_animator) _animator.SetBool("SpeedBoost", false);
+                if (immunityBubble) immunityBubble.SetActive(false);
             }
 
             if (pauseAction && pauseAction.action.WasPressedThisFrame())
@@ -147,6 +164,12 @@ namespace _Code.MainGame.Player
         {
             if (!_isAlive) return;
             if (!other.CompareTag("Enemy")) return;
+            if (_activeBuff != null && _activeBuff.Type == BuffType.Immunity)
+            {
+                _activeBuff = null;
+                Destroy(other.gameObject);
+                return;
+            }
             Vector2 hitPoint = other.ClosestPoint(transform.position);
             channel.NotifyPlayerDied(hitPoint);
             moveAction.action.Disable();
@@ -195,18 +218,8 @@ namespace _Code.MainGame.Player
 
         public bool AttachBuff(BuffAttachment attachment)
         {
-            if (_activeBuff == null)
-            {
-                _activeBuff = attachment;
-                if (_animator && attachment.Type == BuffType.SpeedBoost)
-                {
-                    _animator.SetBool("SpeedBoost", true);
-                }
-                return true;
-            }
-
-            return false;
+            _activeBuff = attachment;
+            return true;
         }
-        
     }
 }

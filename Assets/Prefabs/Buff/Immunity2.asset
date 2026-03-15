@@ -10,10 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2cab8a27ce442a6944afdd801f8e46f, type: 3}
-  m_Name: SpeedyFish
+  m_Name: Immunity2
   m_EditorClassIdentifier: MainGameDef::_Code.MainGame.Buff.BuffSetup
-  buffType: 0
-  duration: 1
-  value: 2
-  iconSprite: {fileID: 8966945178157639174, guid: 874bf4af989facf44b46d78ea1ddeb4f,
-    type: 3}
+  buffType: 1
+  duration: 3
+  value: 0

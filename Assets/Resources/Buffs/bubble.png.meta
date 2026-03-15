@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: 874bf4af989facf44b46d78ea1ddeb4f
+guid: b2c3d4e5f6789012345678abcdef0123
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8966945178157639174
-    second: fish_0
-  - first:
-      213: 7910131988914132003
-    second: fish_1
-  - first:
-      213: 4694313144681828600
-    second: fish_2
+      213: -6666666666666666666
+    second: bubble_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -115,84 +109,27 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: fish_0
+      name: bubble_0
       rect:
         serializedVersion: 2
-        x: 113
-        y: 133
-        width: 296
-        height: 231
+        x: 58
+        y: 80
+        width: 388
+        height: 372
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 606ec70712df07c70800000000000000
-      internalID: 8966945178157639174
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fish_1
-      rect:
-        serializedVersion: 2
-        x: 625
-        y: 133
-        width: 296
-        height: 231
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3245ead522f66cd60800000000000000
-      internalID: 7910131988914132003
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: fish_2
-      rect:
-        serializedVersion: 2
-        x: 1137
-        y: 133
-        width: 296
-        height: 231
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8f0153dfeec852140800000000000000
-      internalID: 4694313144681828600
+      spriteID: 6555569fcfd3b73a0800000000000000
+      internalID: -6666666666666666666
       vertices: []
       indices: 
       edges: []
@@ -201,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: ea75567c7c3314a18af1e072ee0ae59b
     internalID: 0
     vertices: []
     indices: 
@@ -211,9 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      fish_0: 8966945178157639174
-      fish_1: 7910131988914132003
-      fish_2: 4694313144681828600
+      bubble_0: -6666666666666666666
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
