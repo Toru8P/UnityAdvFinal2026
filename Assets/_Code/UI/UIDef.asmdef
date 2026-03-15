@@ -2,7 +2,8 @@
     "name": "UIDef",
     "rootNamespace": "",
     "references": [
-        "GUID:300f7567f9351974bb733b6a83150dde"
+        "GUID:300f7567f9351974bb733b6a83150dde",
+        "CoreDef"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,6 +1,6 @@
-using _Code.UI.Save;
 using UnityEngine;
 using UnityEngine.UI;
+using _Code.Save;
 
 namespace _Code.UI
 {
@@ -24,6 +24,7 @@ namespace _Code.UI
 
         private void Start()
         {
+            SaveManager.InvalidateCache();
             SaveData progress = SaveManager.Load();
             int highest = progress.HighestCompletedLevel;
 

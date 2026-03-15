@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using _Code.UI.Save;
+using _Code.Save;
 
 namespace _Code.MainGame.WinCondition
 {
