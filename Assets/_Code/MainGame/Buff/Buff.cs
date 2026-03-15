@@ -59,6 +59,11 @@ namespace _Code.MainGame.Buff
         }
 
         public bool IsExpired => RemainingDuration <= 0f;
+
+        public override string ToString()
+        {
+            return $"{Type}: {Value}%";
+        }
     }
 }
 

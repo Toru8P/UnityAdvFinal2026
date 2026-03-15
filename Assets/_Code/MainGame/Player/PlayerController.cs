@@ -29,7 +29,7 @@ namespace _Code.MainGame.Player
         [SerializeField] private SpriteRenderer skinRenderer;
         [Header("Immunity Buff")]
         [Tooltip("Prefab shown around the player while immunity is active. Assign Prefabs/Buff/ImmunityBubble.")]
-        [SerializeField] private GameObject immunityBubblePrefab;
+        [SerializeField] private GameObject immunityBubble;
         
         [Header("Light Settings")]
         [SerializeField] private bool turnOnLight = true;
@@ -50,54 +50,15 @@ namespace _Code.MainGame.Player
         private Vector2 _currentLightDir = Vector2.right;
 
         [CanBeNull] private BuffAttachment _activeBuff;
-        [CanBeNull] private BuffAttachment _immunityBuff;
-        private GameObject _immunityBubble;
         
         private void Awake()
         {
             _col = GetComponent<Collider2D>();
             _animator = GetComponent<Animator>();
-            ResolveImmunityBubble();
             if (turnOnLight && lights)
             {
                 lights.enabled = true;
             }
-        }
-
-        private void ResolveImmunityBubble()
-        {
-            var bubble = transform.Find("ImmunityBubble");
-            if (bubble == null)
-                bubble = FindInChildren(transform, "ImmunityBubble");
-            if (bubble != null)
-            {
-                _immunityBubble = bubble.gameObject;
-                return;
-            }
-            if (immunityBubblePrefab != null)
-            {
-                var go = Instantiate(immunityBubblePrefab, transform);
-                go.name = "ImmunityBubble";
-                go.transform.localPosition = Vector3.zero;
-                go.transform.localRotation = Quaternion.identity;
-                go.transform.localScale = Vector3.one;
-                var sr = go.GetComponent<SpriteRenderer>();
-                if (sr != null)
-                    sr.color = new Color(1f, 1f, 1f, 0.5f);
-                _immunityBubble = go;
-                go.SetActive(false);
-            }
-        }
-
-        private static Transform FindInChildren(Transform parent, string name)
-        {
-            if (parent.name == name) return parent;
-            for (int i = 0; i < parent.childCount; i++)
-            {
-                var found = FindInChildren(parent.GetChild(i), name);
-                if (found != null) return found;
-            }
-            return null;
         }
 
         private void OnEnable()
@@ -116,19 +77,26 @@ namespace _Code.MainGame.Player
 
             if (_activeBuff != null)
             {
+                switch (_activeBuff.Type)
+                {
+                    case BuffType.Immunity:
+                        if (_animator) _animator.SetBool("SpeedBoost", false);
+                        if (immunityBubble) immunityBubble.SetActive(true);
+                        break;
+                    case BuffType.SpeedBoost:
+                        if (_animator) _animator.SetBool("SpeedBoost", true);
+                        if (immunityBubble) immunityBubble.SetActive(false);
+                        break;
+                }
+                
                 _activeBuff.Update(Time.deltaTime);
-                if (_activeBuff.IsExpired)
-                    _activeBuff = null;
+                if (_activeBuff.IsExpired) _activeBuff = null;
             }
-            if (_immunityBuff != null)
+            else
             {
-                _immunityBuff.Update(Time.deltaTime);
-                if (_immunityBuff.IsExpired)
-                    _immunityBuff = null;
+                if (_animator) _animator.SetBool("SpeedBoost", false);
+                if (immunityBubble) immunityBubble.SetActive(false);
             }
-            bool hasImmunity = _immunityBuff != null && !_immunityBuff.IsExpired;
-            if (_immunityBubble != null)
-                _immunityBubble.SetActive(hasImmunity);
 
             if (pauseAction && pauseAction.action.WasPressedThisFrame())
             {
@@ -196,8 +164,9 @@ namespace _Code.MainGame.Player
         {
             if (!_isAlive) return;
             if (!other.CompareTag("Enemy")) return;
-            if (_immunityBuff != null && !_immunityBuff.IsExpired)
+            if (_activeBuff != null && _activeBuff.Type == BuffType.Immunity)
             {
+                _activeBuff = null;
                 Destroy(other.gameObject);
                 return;
             }
@@ -249,28 +218,8 @@ namespace _Code.MainGame.Player
 
         public bool AttachBuff(BuffAttachment attachment)
         {
-            if (attachment.Type == BuffType.Immunity)
-            {
-                if (_immunityBuff == null)
-                {
-                    _immunityBuff = attachment;
-                    if (_immunityBubble == null)
-                        ResolveImmunityBubble();
-                    if (_immunityBubble != null)
-                        _immunityBubble.SetActive(true);
-                    return true;
-                }
-                return false;
-            }
-            if (_activeBuff == null)
-            {
-                _activeBuff = attachment;
-                if (_animator && attachment.Type == BuffType.SpeedBoost)
-                    _animator.SetBool("SpeedBoost", true);
-                return true;
-            }
-            return false;
+            _activeBuff = attachment;
+            return true;
         }
-        
     }
 }
