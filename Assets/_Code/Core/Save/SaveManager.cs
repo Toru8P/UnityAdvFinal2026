@@ -2,11 +2,9 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace _Code.UI.Save
+namespace _Code.Save
 {
-    /// <summary>
-    /// Saves and loads progress to JSON in Application.persistentDataPath.
-    /// </summary>
+    // Saves and loads progress to JSON in Application.persistentDataPath.
     public static class SaveManager
     {
         private const string FileName = "progress.json";
@@ -14,9 +12,7 @@ namespace _Code.UI.Save
         private static SaveData _cached;
         private static bool _loaded;
 
-        /// <summary>
-        /// Loads progress from disk (or returns cached). Never returns null.
-        /// </summary>
+        // Loads progress from disk (or returns cached). Never returns null.
         public static SaveData Load()
         {
             if (_loaded)
@@ -45,10 +41,8 @@ namespace _Code.UI.Save
             return _cached;
         }
 
-        /// <summary>
-        /// Marks the given level (scene build index) as completed and saves.
-        /// Level 1 = build index 1, Level 2 = 2, Level 3 = 3.
-        /// </summary>
+        // Marks the given level (scene build index) as completed and saves.
+        // Level 1 = build index 1, Level 2 = 2, Level 3 = 3.
         public static void CompleteLevel(int sceneBuildIndex)
         {
             SaveData data = Load();
@@ -62,9 +56,7 @@ namespace _Code.UI.Save
             }
         }
 
-        /// <summary>
-        /// Writes current progress to disk.
-        /// </summary>
+        // Writes current progress to disk.
         public static void Save(SaveData data)
         {
             if (data == null)
@@ -84,9 +76,7 @@ namespace _Code.UI.Save
             }
         }
 
-        /// <summary>
-        /// Clears cached data so next Load() reads from disk.
-        /// </summary>
+        // Clears cached data so next Load() reads from disk.
         public static void InvalidateCache()
         {
             _loaded = false;
