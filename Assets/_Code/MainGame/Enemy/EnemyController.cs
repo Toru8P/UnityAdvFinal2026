@@ -21,6 +21,21 @@ namespace _Code.MainGame.Enemy
         private Vector2 _currentLightDir = Vector2.right;
         
         private float? _pendingSpeed = null;
+        
+        private float _knockTime;
+        private Vector2 _knockVel;
+        private bool _knocked;
+
+
+        public void Knock(Vector2 away, float strength = 6f, float time = 0.12f)
+        {
+            _knocked = true;
+            _knockTime = time;
+            _knockVel = away.normalized * strength;
+
+            _agent.isStopped = true;
+            _agent.ResetPath();
+        }
 
 
         private void Start()
@@ -51,6 +66,22 @@ namespace _Code.MainGame.Enemy
 
         private void LateUpdate()
         {
+                        
+            if (_knocked)
+            {
+                Vector2 d = _knockVel * Time.deltaTime;
+                _agent.Move(new Vector3(d.x, 0f, d.y));
+
+
+                _knockTime -= Time.deltaTime;
+                if (_knockTime <= 0f)
+                {
+                    _knocked = false;
+                    _agent.isStopped = false;
+                }
+                return;
+            }
+            
             if (target)
             {
                 _agent.SetDestination(target.position);

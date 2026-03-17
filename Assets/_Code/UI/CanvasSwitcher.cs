@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace _Code.UI
 {
@@ -17,40 +19,48 @@ namespace _Code.UI
         
         public void Awake()
         {
+            if (GetComponent<UniversalSelectionFrame>() == null)
+                gameObject.AddComponent<UniversalSelectionFrame>();
             Reset();
             startCanvas?.SetActive(true);
             if (turnOnTutorial) tutorialCanvas?.SetActive(true);
             gameCanvas?.SetActive(true);
+            SelectFirstInActiveCanvas();
         }
         
         public void OnGameLost()
         {
             Reset();
             lostCanvas.SetActive(true);
+            SelectFirstInActiveCanvas();
         }
 
         public void OnGameWon()
         {
             Reset();
             winCanvas.SetActive(true);
+            SelectFirstInActiveCanvas();
         }
 
         public void OnGameStart()
         {
             Reset();
             gameCanvas.SetActive(true);
+            SelectFirstInActiveCanvas();
         }
         
         public void OnPauseMenu()
         {
             Reset();
             pauseCanvas?.SetActive(true);
+            SelectFirstInActiveCanvas();
         }
 
         public void OnResume()
         {
             Reset();
             gameCanvas?.SetActive(true);
+            SelectFirstInActiveCanvas();
         }
 
         private void Reset()
@@ -62,6 +72,26 @@ namespace _Code.UI
             
             lostCanvas?.SetActive(false);
             winCanvas?.SetActive(false);
+        }
+
+        private void SelectFirstInActiveCanvas()
+        {
+            if (EventSystem.current == null) return;
+
+            var active = startCanvas != null && startCanvas.activeInHierarchy ? startCanvas
+                : gameCanvas != null && gameCanvas.activeInHierarchy ? gameCanvas
+                : pauseCanvas != null && pauseCanvas.activeInHierarchy ? pauseCanvas
+                : lostCanvas != null && lostCanvas.activeInHierarchy ? lostCanvas
+                : winCanvas != null && winCanvas.activeInHierarchy ? winCanvas
+                : null;
+
+            if (active == null) return;
+
+            var selectable = active.GetComponentInChildren<Selectable>(true);
+            while (selectable != null && !selectable.interactable)
+                selectable = selectable.FindSelectableOnDown();
+            if (selectable != null && selectable.interactable)
+                EventSystem.current.SetSelectedGameObject(selectable.gameObject);
         }
     }
 }
