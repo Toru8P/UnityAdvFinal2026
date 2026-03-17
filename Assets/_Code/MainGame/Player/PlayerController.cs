@@ -1,10 +1,8 @@
 using _Code.MainGame.Buff;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.SceneManagement;
 
 namespace _Code.MainGame.Player
 {
@@ -18,8 +16,6 @@ namespace _Code.MainGame.Player
         
         [Header("Input Settings")]
         [SerializeField] private InputActionReference moveAction;
-        [SerializeField] private InputActionReference pauseAction;
-        [SerializeField] private UnityEvent onPausePressed;
         
         [Header("Hit Detection Settings")]  
         [SerializeField] private float skin = 0.02f;
@@ -65,36 +61,14 @@ namespace _Code.MainGame.Player
         {
             if (moveAction != null)
                 moveAction.action.Enable();
-            ResolvePauseAction();
-            if (_resolvedPauseAction != null)
-                _resolvedPauseAction.Enable();
         }
 
         private void OnDisable()
         {
             if (moveAction != null)
                 moveAction.action.Disable();
-            if (_resolvedPauseAction != null)
-                _resolvedPauseAction.Disable();
         }
-
-        private UnityEngine.InputSystem.InputAction _resolvedPauseAction;
-
-        private void ResolvePauseAction()
-        {
-            if (pauseAction != null && pauseAction.action != null)
-            {
-                _resolvedPauseAction = pauseAction.action;
-                return;
-            }
-            if (moveAction == null || moveAction.action?.actionMap?.asset == null)
-                return;
-            var asset = moveAction.action.actionMap.asset;
-            var pause = asset.FindAction("Player/Pause", true);
-            if (pause != null)
-                _resolvedPauseAction = pause;
-        }
-
+        
         private void Update()
         {
             if (!_isAlive) return;
@@ -120,12 +94,6 @@ namespace _Code.MainGame.Player
             {
                 if (_animator) _animator.SetBool("SpeedBoost", false);
                 if (immunityBubble) immunityBubble.SetActive(false);
-            }
-
-            var pause = _resolvedPauseAction ?? pauseAction?.action;
-            if (pause != null && pause.WasPressedThisFrame())
-            {
-                onPausePressed?.Invoke();
             }
             
             _moveInput = moveAction.action.ReadValue<Vector2>();
