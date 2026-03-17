@@ -63,12 +63,36 @@ namespace _Code.MainGame.Player
 
         private void OnEnable()
         {
-            moveAction.action.Enable();
+            if (moveAction != null)
+                moveAction.action.Enable();
+            ResolvePauseAction();
+            if (_resolvedPauseAction != null)
+                _resolvedPauseAction.Enable();
         }
 
         private void OnDisable()
         {
-            moveAction.action.Disable();
+            if (moveAction != null)
+                moveAction.action.Disable();
+            if (_resolvedPauseAction != null)
+                _resolvedPauseAction.Disable();
+        }
+
+        private UnityEngine.InputSystem.InputAction _resolvedPauseAction;
+
+        private void ResolvePauseAction()
+        {
+            if (pauseAction != null && pauseAction.action != null)
+            {
+                _resolvedPauseAction = pauseAction.action;
+                return;
+            }
+            if (moveAction == null || moveAction.action?.actionMap?.asset == null)
+                return;
+            var asset = moveAction.action.actionMap.asset;
+            var pause = asset.FindAction("Player/Pause", true);
+            if (pause != null)
+                _resolvedPauseAction = pause;
         }
 
         private void Update()
@@ -98,10 +122,10 @@ namespace _Code.MainGame.Player
                 if (immunityBubble) immunityBubble.SetActive(false);
             }
 
-            if (pauseAction && pauseAction.action.WasPressedThisFrame())
+            var pause = _resolvedPauseAction ?? pauseAction?.action;
+            if (pause != null && pause.WasPressedThisFrame())
             {
                 onPausePressed?.Invoke();
-                Debug.Log("Pause Pressed");
             }
             
             _moveInput = moveAction.action.ReadValue<Vector2>();
