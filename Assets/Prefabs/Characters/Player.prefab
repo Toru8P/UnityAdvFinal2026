@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 2124923859593574950}
   - component: {fileID: 426241162427134337}
   - component: {fileID: 5143158919615396745}
+  - component: {fileID: 8542478849262022903}
   - component: {fileID: 8985582910847438946}
   - component: {fileID: 8798233035365790829}
   m_Layer: 7
@@ -354,22 +355,33 @@ MonoBehaviour:
   moveSpeed: 5
   moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100,
     type: 3}
-  pauseAction: {fileID: 0}
-  onPausePressed:
-    m_PersistentCalls:
-      m_Calls: []
   skin: 0.05
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
-  skinRenderer: {fileID: 2124923859593574950}
-  immunityBubble: {fileID: 9183121383096293684}
-  turnOnLight: 1
-  lights: {fileID: 6792373505344763179}
   stepInterval: 0.35
   footstepSource: {fileID: 5206274279222389767}
   footstepClips:
   - {fileID: 8300000, guid: 7a16c0a1e2c56eb4e8e10729597468dd, type: 3}
+--- !u!114 &8542478849262022903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2866884578041089457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0525a1941124103a32a8af77b0942ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MainGameDef::_Code.MainGame.Player.PlayerVisualController
+  animator: {fileID: 8798233035365790829}
+  skinRenderer: {fileID: 2124923859593574950}
+  immunityBubble: {fileID: 9183121383096293684}
+  turnOnLight: 1
+  lights: {fileID: 6792373505344763179}
+  walkParam: Walk
+  speedBoostParam: SpeedBoost
 --- !u!50 &8985582910847438946
 Rigidbody2D:
   serializedVersion: 5

@@ -1,167 +1,124 @@
 using _Code.MainGame.Buff;
+using _Code.MainGame.Enemy;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal;
 
 namespace _Code.MainGame.Player
 {
-    [RequireComponent(typeof(Collider2D), typeof(Animator))]
+    [RequireComponent(typeof(Collider2D))]
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private PlayerStateChannel channel;
-        
+
         [Header("Movement Settings")]
         [SerializeField] private float moveSpeed = 4f;
-        
+
         [Header("Input Settings")]
         [SerializeField] private InputActionReference moveAction;
-        
-        [Header("Hit Detection Settings")]  
+
+        [Header("Hit Detection Settings")]
         [SerializeField] private float skin = 0.02f;
         [SerializeField] private LayerMask obstacleMask;
-        
-        [Header("Visual Settings")]
-        [SerializeField] private SpriteRenderer skinRenderer;
-        [Header("Immunity Buff")]
-        [Tooltip("Prefab shown around the player while immunity is active. Assign Prefabs/Buff/ImmunityBubble.")]
-        [SerializeField] private GameObject immunityBubble;
-        
-        [Header("Light Settings")]
-        [SerializeField] private bool turnOnLight = true;
-        [SerializeField] private Light2D lights;
-        
+
         [Header("Footsteps Settings")]
-        public float stepInterval = 0.4f; // seconds between steps
+        public float stepInterval = 0.4f;
         private float stepTimer = 0f;
         public AudioSource footstepSource;
         public AudioClip[] footstepClips;
-        
+
         private bool _isAlive = true;
-    
+
         private Collider2D _col;
         private Vector2 _moveInput;
         private readonly RaycastHit2D[] _hits = new RaycastHit2D[8];
-        private Animator _animator;
-        private Vector2 _currentLightDir = Vector2.right;
 
         [CanBeNull] private BuffAttachment _activeBuff;
-        
+
+        public bool IsAlive => _isAlive;
+        public Vector2 MoveInput => _moveInput;
+        public bool IsMoving => _moveInput.sqrMagnitude > 0.01f;
+
+        public BuffType? ActiveBuffType => _activeBuff != null ? _activeBuff.Type : null;
+        public float ActiveBuffValue => _activeBuff != null ? _activeBuff.Value : 0f;
+
         private void Awake()
         {
             _col = GetComponent<Collider2D>();
-            _animator = GetComponent<Animator>();
-            if (turnOnLight && lights)
-            {
-                lights.enabled = true;
-            }
         }
 
         private void OnEnable()
         {
-            if (moveAction != null)
+            if (moveAction)
                 moveAction.action.Enable();
         }
 
         private void OnDisable()
         {
-            if (moveAction != null)
+            if (moveAction)
                 moveAction.action.Disable();
         }
-        
+
         private void Update()
         {
             if (!_isAlive) return;
 
+            // Buff lifetime update stays gameplay-side
             if (_activeBuff != null)
             {
-                switch (_activeBuff.Type)
-                {
-                    case BuffType.Immunity:
-                        if (_animator) _animator.SetBool("SpeedBoost", false);
-                        if (immunityBubble) immunityBubble.SetActive(true);
-                        break;
-                    case BuffType.SpeedBoost:
-                        if (_animator) _animator.SetBool("SpeedBoost", true);
-                        if (immunityBubble) immunityBubble.SetActive(false);
-                        break;
-                }
-                
                 _activeBuff.Update(Time.deltaTime);
                 if (_activeBuff.IsExpired) _activeBuff = null;
             }
-            else
-            {
-                if (_animator) _animator.SetBool("SpeedBoost", false);
-                if (immunityBubble) immunityBubble.SetActive(false);
-            }
-            
+
+            // Input + movement stays gameplay-side
             _moveInput = moveAction.action.ReadValue<Vector2>();
             _moveInput = Vector2.ClampMagnitude(_moveInput, 1f);
-            bool hasSpeedBoost = _activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost;
+
             float speed = moveSpeed;
-            if (hasSpeedBoost)
-            {
+            if (_activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost)
                 speed += _activeBuff.Value;
-            }
-            
+
             Vector2 delta = _moveInput * (speed * Time.deltaTime);
             MoveWithCollision(delta);
 
-            if (_moveInput.x != 0)
-            {
-                skinRenderer.flipX = !(_moveInput.x > 0);
-            }
-            
-            bool isMoving = _moveInput.sqrMagnitude > 0.01f;
+            // Footsteps stays gameplay-side (or can also be moved to visuals)
+            HandleFootsteps();
+        }
 
-            
-            if (lights && isMoving)
-            {
-                Vector2 dir = _moveInput.normalized;
-                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
-
-                lights.transform.rotation = Quaternion.RotateTowards(
-                    lights.transform.rotation,
-                    targetRot,
-                    720f * Time.deltaTime
-                );
-            }
-            
-            if (_animator)
-            {
-                _animator.SetBool("Walk", _moveInput != Vector2.zero);
-                _animator.SetBool("SpeedBoost", hasSpeedBoost);
-            }
-            
-
-            if (isMoving)
-            {
-                stepTimer -= Time.deltaTime;
-
-                if (stepTimer <= 0f)
-                {
-                    PlayFootstep();
-                    stepTimer = stepInterval;
-                }
-            }
-            else
+        private void HandleFootsteps()
+        {
+            if (!IsMoving)
             {
                 stepTimer = 0f;
+                return;
+            }
+
+            stepTimer -= Time.deltaTime;
+            if (stepTimer <= 0f)
+            {
+                PlayFootstep();
+                stepTimer = stepInterval;
             }
         }
-    
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!_isAlive) return;
             if (!other.CompareTag("Enemy")) return;
+            
             if (_activeBuff != null && _activeBuff.Type == BuffType.Immunity)
             {
                 _activeBuff = null;
-                Destroy(other.gameObject);
+
+                
+                Vector2 away = (other.ClosestPoint(transform.position) - (Vector2)transform.position).normalized;
+                other.GetComponentInParent<EnemyController>()?.Knock(away);
+
+
                 return;
             }
+
+
             Vector2 hitPoint = other.ClosestPoint(transform.position);
             channel.NotifyPlayerDied(hitPoint);
             moveAction.action.Disable();
@@ -170,8 +127,7 @@ namespace _Code.MainGame.Player
 
         private void MoveWithCollision(Vector2 delta)
         {
-            if (delta == Vector2.zero)
-                return;
+            if (delta == Vector2.zero) return;
 
             Vector2 dir = delta.normalized;
             float dist = delta.magnitude;
@@ -181,28 +137,26 @@ namespace _Code.MainGame.Player
                 useLayerMask = true,
                 layerMask = obstacleMask
             };
+
             int hitCount = _col.Cast(dir, filter, _hits, dist + skin);
 
             float allowed = dist;
-
             for (int i = 0; i < hitCount; i++)
             {
-                if (!_hits[i].collider)
-                    continue;
+                if (!_hits[i].collider) continue;
 
                 float d = _hits[i].distance - skin;
                 if (d < allowed)
                     allowed = Mathf.Max(0f, d);
-
-                // Debug.Log("Hit: " + hits[i].collider.name + " dist: " + hits[i].distance);
             }
 
             transform.position += (Vector3)(dir * allowed);
         }
-        
-        void PlayFootstep()
+
+        private void PlayFootstep()
         {
-            if (footstepClips.Length == 0) return;
+            if (footstepClips == null || footstepClips.Length == 0) return;
+            if (!footstepSource) return;
 
             footstepSource.clip = footstepClips[Random.Range(0, footstepClips.Length)];
             footstepSource.Play();

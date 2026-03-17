@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace _Code.MainGame
+namespace _Code.MainGame.Input
 {
     public static class InputActionsBootstrap
     {
@@ -19,15 +19,15 @@ namespace _Code.MainGame
         private static void Apply()
         {
             var asset = Resources.Load<InputActionAsset>("InputSystem_Actions");
-            if (asset == null)
+            if (!asset)
                 return;
 
             var eventSystem = EventSystem.current ?? Object.FindFirstObjectByType<EventSystem>();
-            if (eventSystem == null)
+            if (!eventSystem)
                 return;
 
             var module = eventSystem.GetComponent<InputSystemUIInputModule>();
-            if (module != null)
+            if (module)
                 module.actionsAsset = asset;
 
             EnsureFirstSelected(eventSystem);
@@ -35,7 +35,7 @@ namespace _Code.MainGame
 
         private static void EnsureFirstSelected(EventSystem eventSystem)
         {
-            if (eventSystem == null)
+            if (!eventSystem)
                 return;
 
             if (eventSystem.currentSelectedGameObject != null)
@@ -44,11 +44,9 @@ namespace _Code.MainGame
             var selectables = Object.FindObjectsByType<Selectable>(FindObjectsSortMode.None);
             foreach (var s in selectables)
             {
-                if (s != null && s.IsActive() && s.interactable)
-                {
-                    eventSystem.SetSelectedGameObject(s.gameObject);
-                    return;
-                }
+                if (!s || !s.IsActive() || !s.interactable) continue;
+                eventSystem.SetSelectedGameObject(s.gameObject);
+                return;
             }
         }
     }
