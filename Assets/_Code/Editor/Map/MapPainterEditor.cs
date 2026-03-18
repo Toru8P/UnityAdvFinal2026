@@ -1,4 +1,5 @@
-﻿using _Code.MainGame.Map;
+﻿using System.Collections.Generic;
+using _Code.MainGame.Map;
 
 namespace _Code.Editor.Map
 {
@@ -48,6 +49,7 @@ namespace _Code.Editor.Map
         {
             Tilemap ground = mapPainter.GroundTilemap;
             Tilemap obstacle = mapPainter.ObstacleTilemap;
+            Tilemap spawnZone = mapPainter.SpawnZoneTilemap;
 
             if (!ground && !obstacle)
             {
@@ -57,8 +59,9 @@ namespace _Code.Editor.Map
 
             if (ground) ground.CompressBounds();
             if (obstacle) obstacle.CompressBounds();
+            if (spawnZone) spawnZone.CompressBounds();
 
-            BoundsInt bounds = GetCombinedBounds(ground, obstacle);
+            BoundsInt bounds = GetCombinedBounds(new List<Tilemap>() { ground, obstacle, spawnZone });
 
             if (bounds.size.x <= 0 || bounds.size.y <= 0)
             {
@@ -93,6 +96,9 @@ namespace _Code.Editor.Map
 
                     if (obstacle && obstacle.HasTile(cell))
                         color = Color.red;
+                    
+                    if (spawnZone && spawnZone.HasTile(cell))
+                        color = Color.cyan;
 
                     _preview.SetPixel(x, y, color);
                 }
@@ -101,23 +107,48 @@ namespace _Code.Editor.Map
             _preview.Apply();
         }
 
-        private BoundsInt GetCombinedBounds(Tilemap a, Tilemap b)
+        private BoundsInt GetCombinedBounds(IList<Tilemap> tilemaps)
         {
-            bool hasA = a;
-            bool hasB = b;
+            bool hasAny = false;
 
-            if (hasA && !hasB) return a.cellBounds;
-            if (!hasA && hasB) return b.cellBounds;
+            int xMin = 0, yMin = 0;
+            int xMax = 0, yMax = 0;
 
-            BoundsInt ba = a.cellBounds;
-            BoundsInt bb = b.cellBounds;
+            foreach (var tm in tilemaps)
+            {
+                if (!tm) 
+                    continue;
 
-            int xMin = Mathf.Min(ba.xMin, bb.xMin);
-            int yMin = Mathf.Min(ba.yMin, bb.yMin);
-            int xMax = Mathf.Max(ba.xMax, bb.xMax);
-            int yMax = Mathf.Max(ba.yMax, bb.yMax);
+                BoundsInt b = tm.cellBounds;
 
-            return new BoundsInt(xMin, yMin, 0, xMax - xMin, yMax - yMin, 1);
+                if (!hasAny)
+                {
+                    xMin = b.xMin;
+                    yMin = b.yMin;
+                    xMax = b.xMax;
+                    yMax = b.yMax;
+                    hasAny = true;
+                }
+                else
+                {
+                    xMin = Mathf.Min(xMin, b.xMin);
+                    yMin = Mathf.Min(yMin, b.yMin);
+                    xMax = Mathf.Max(xMax, b.xMax);
+                    yMax = Mathf.Max(yMax, b.yMax);
+                }
+            }
+
+            if (!hasAny)
+                return new BoundsInt();
+
+            return new BoundsInt(
+                xMin,
+                yMin,
+                0,
+                xMax - xMin,
+                yMax - yMin,
+                1
+            );
         }
     }
 }
