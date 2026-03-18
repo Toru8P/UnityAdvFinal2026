@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace _Code.UI
@@ -10,11 +11,13 @@ namespace _Code.UI
     {
         [SerializeField] private Color borderColor = Color.black;
         [SerializeField] private float borderThickness = 4f;
+        [SerializeField] private float activateStickThreshold = 0.25f;
 
         private RectTransform _frameRoot;
         private RectTransform _myRt;
         private Selectable _lastSelected;
         private bool _built;
+        private bool _activatedByStick;
 
         private void Awake()
         {
@@ -45,6 +48,34 @@ namespace _Code.UI
             _built = true;
         }
 
+        private void Update()
+        {
+            if (_activatedByStick)
+                return;
+
+            if (HasStickInput())
+                _activatedByStick = true;
+        }
+
+        private bool HasStickInput()
+        {
+            var gp = Gamepad.current;
+            if (gp != null)
+            {
+                if (gp.leftStick.ReadValue().sqrMagnitude >= activateStickThreshold * activateStickThreshold)
+                    return true;
+            }
+
+            var js = Joystick.current;
+            if (js != null)
+            {
+                if (js.stick.ReadValue().sqrMagnitude >= activateStickThreshold * activateStickThreshold)
+                    return true;
+            }
+
+            return false;
+        }
+
         private static Sprite CreatePixelSprite()
         {
             var tex = new Texture2D(1, 1);
@@ -71,6 +102,12 @@ namespace _Code.UI
         private void LateUpdate()
         {
             if (_frameRoot == null) return;
+            if (!_activatedByStick)
+            {
+                _frameRoot.gameObject.SetActive(false);
+                _lastSelected = null;
+                return;
+            }
 
             var es = EventSystem.current;
             GameObject selected = es != null ? es.currentSelectedGameObject : null;
