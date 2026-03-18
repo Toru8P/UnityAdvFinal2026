@@ -1681,8 +1681,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 721, y: -226}
-  m_SizeDelta: {x: 405.7141, y: 405.7141}
+  m_AnchoredPosition: {x: 703.2, y: -367.58}
+  m_SizeDelta: {x: 279, y: 124}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1806485447
 MonoBehaviour:
@@ -1704,7 +1704,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8bd8a87ef1d4a5c45a119c9abdfb08af, type: 3}
+  m_Sprite: {fileID: 6742892484015271286, guid: 2f13b8a55264f314c9db7dcc0a6dd490,
+    type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1765,6 +1766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UIDef::_Code.UI.UniversalSelectionFrame
   borderColor: {r: 0, g: 0, b: 0, a: 1}
   borderThickness: 4
+  activateStickThreshold: 0.25
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
