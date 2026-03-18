@@ -3,7 +3,9 @@
     "rootNamespace": "",
     "references": [
         "GUID:300f7567f9351974bb733b6a83150dde",
-        "CoreDef"
+        "CoreDef",
+        "Unity.InputSystem",
+        "Unity.InputSystem.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
