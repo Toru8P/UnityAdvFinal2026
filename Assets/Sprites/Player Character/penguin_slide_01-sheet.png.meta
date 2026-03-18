@@ -69,10 +69,10 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 512
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -147,15 +147,37 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
+      name: penguin_slide_01-sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 512
+        height: 512
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 475d6befe4fb3bc00800000000000000
+      internalID: 915285495288092020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: penguin_slide_01-sheet_1
       rect:
         serializedVersion: 2
         x: 0
-        y: 669
-        width: 314
-        height: 125
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 2560
+        width: 512
+        height: 512
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -173,11 +195,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 535
-        width: 314
-        height: 126
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 2048
+        width: 512
+        height: 512
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -191,37 +213,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: penguin_slide_01-sheet_3
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 401
-        width: 314
-        height: 126
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c7fd36140be8810c0800000000000000
-      internalID: -4604773731323879556
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: penguin_slide_01-sheet_4
       rect:
         serializedVersion: 2
         x: 0
-        y: 267
-        width: 314
-        height: 126
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 1024
+        width: 512
+        height: 512
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -239,11 +239,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 133
-        width: 314
-        height: 126
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 1536
+        width: 512
+        height: 512
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -261,11 +261,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 314
-        height: 125
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 512
+        width: 512
+        height: 512
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -282,7 +282,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 32495ccd4dfb0434c81be9004b7a9f38
+    spriteID: 2e942974824215945b5f64f2c2380c01
     internalID: 0
     vertices: []
     indices: 
@@ -300,6 +300,7 @@ TextureImporter:
       penguin_slide_01-sheet_5: -73919534091623657
       penguin_slide_01-sheet_6: 717118381513078091
       penguin_slide_01-sheet_7: -1318350972438549725
+      penguin_slide_01-sheet_8: 2016044188
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -11,6 +11,42 @@ TextureImporter:
   - first:
       213: 8619065365611009614
     second: penguin-enemy_2
+  - first:
+      213: -6609961479636950584
+    second: penguin-enemy_3
+  - first:
+      213: 7542121045716135141
+    second: penguin-enemy_4
+  - first:
+      213: -5215210765166056456
+    second: penguin-enemy_5
+  - first:
+      213: -3862341986953876410
+    second: penguin-enemy_6
+  - first:
+      213: -7890550518041879580
+    second: penguin-enemy_7
+  - first:
+      213: 1713169545873662975
+    second: penguin-enemy_8
+  - first:
+      213: 5190956857744979995
+    second: penguin-enemy_9
+  - first:
+      213: -1843938022154181173
+    second: penguin-enemy_10
+  - first:
+      213: 1928456471820647453
+    second: penguin-enemy_11
+  - first:
+      213: 4354637790835162884
+    second: penguin-enemy_12
+  - first:
+      213: 5846673384397729309
+    second: penguin-enemy_13
+  - first:
+      213: 5530261223139575949
+    second: penguin-enemy_14
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -43,7 +79,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -79,6 +115,19 @@ TextureImporter:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
+    resizeAlgorithm: 1
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -90,7 +139,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Standalone
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -123,11 +172,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 159
-        y: 1120
+        y: 5758
         width: 177
         height: 262
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -145,11 +194,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 159
-        y: 608
+        y: 5245
         width: 177
-        height: 262
+        height: 263
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -167,11 +216,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 159
-        y: 96
+        y: 4732
         width: 177
-        height: 262
+        height: 264
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -184,11 +233,209 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: penguin-enemy_3
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 4211
+        width: 192
+        height: 267
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c1693b2e03b444a0800000000000000
+      internalID: -6609961479636950584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: penguin-enemy_4
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 3695
+        width: 182
+        height: 267
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ec68e6912ffaa860800000000000000
+      internalID: 7542121045716135141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: penguin-enemy_5
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 3183
+        width: 177
+        height: 267
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fbeb71c079df97b0800000000000000
+      internalID: -5215210765166056456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: penguin-enemy_6
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 2666
+        width: 177
+        height: 262
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64ca98a2d64366ac0800000000000000
+      internalID: -3862341986953876410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: penguin-enemy_7
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 2146
+        width: 177
+        height: 270
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ebd6d91c122f7290800000000000000
+      internalID: -7890550518041879580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: penguin-enemy_8
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 1638
+        width: 177
+        height: 266
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff321dd00a666c710800000000000000
+      internalID: 1713169545873662975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: penguin-enemy_11
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 1126
+        width: 190
+        height: 251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1c3ca791f043ca10800000000000000
+      internalID: 1928456471820647453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: penguin-enemy_12
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 600
+        width: 177
+        height: 270
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40fb838bff7ce6c30800000000000000
+      internalID: 4354637790835162884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: penguin-enemy_13
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 92
+        width: 177
+        height: 266
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1ee1c2577e832150800000000000000
+      internalID: 5846673384397729309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: aa4572b2ab2f1594985c1d782583f783
     internalID: 0
     vertices: []
     indices: 
@@ -200,7 +447,19 @@ TextureImporter:
     nameFileIdTable:
       penguin-enemy_0: -8324867556917142765
       penguin-enemy_1: -8371108441319272303
+      penguin-enemy_10: -1843938022154181173
+      penguin-enemy_11: 1928456471820647453
+      penguin-enemy_12: 4354637790835162884
+      penguin-enemy_13: 5846673384397729309
+      penguin-enemy_14: 5530261223139575949
       penguin-enemy_2: 8619065365611009614
+      penguin-enemy_3: -6609961479636950584
+      penguin-enemy_4: 7542121045716135141
+      penguin-enemy_5: -5215210765166056456
+      penguin-enemy_6: -3862341986953876410
+      penguin-enemy_7: -7890550518041879580
+      penguin-enemy_8: 1713169545873662975
+      penguin-enemy_9: 5190956857744979995
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

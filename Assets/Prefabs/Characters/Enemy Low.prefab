@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8086624636062823530}
   - component: {fileID: 7440933288064320611}
   - component: {fileID: 1005994428197575628}
+  - component: {fileID: 3030522681464480912}
   m_Layer: 0
   m_Name: Enemy Low
   m_TagString: Enemy
@@ -92,7 +93,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.7716948, y: 2.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -173,8 +174,8 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.77, y: 2.62}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 1.7716948, y: 2.64}
+    newSize: {x: 1.7716948, y: 2.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -242,6 +243,28 @@ PolygonCollider2D:
       - {x: 0.20953783, y: -1.0107219}
       - {x: 0.23355387, y: -1.0114449}
   m_UseDelaunayMesh: 1
+--- !u!95 &3030522681464480912
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377191867016112115}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 4745ff7241257654d9592d366857240f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4299448643466704836
 GameObject:
   m_ObjectHideFlags: 0
