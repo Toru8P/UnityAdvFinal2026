@@ -23,7 +23,7 @@ namespace _Code.MainGame.Player
 
         [Header("Footsteps Settings")]
         public float stepInterval = 0.4f;
-        private float stepTimer = 0f;
+        private float _stepTimer = 0f;
         public AudioSource footstepSource;
         public AudioClip[] footstepClips;
 
@@ -87,17 +87,17 @@ namespace _Code.MainGame.Player
 
         private void HandleFootsteps()
         {
-            if (!IsMoving)
+            if (!IsMoving || ActiveBuffType == BuffType.SpeedBoost)
             {
-                stepTimer = 0f;
+                _stepTimer = 0f;
                 return;
             }
 
-            stepTimer -= Time.deltaTime;
-            if (stepTimer <= 0f)
+            _stepTimer -= Time.deltaTime;
+            if (_stepTimer <= 0f)
             {
                 PlayFootstep();
-                stepTimer = stepInterval;
+                _stepTimer = stepInterval;
             }
         }
 
