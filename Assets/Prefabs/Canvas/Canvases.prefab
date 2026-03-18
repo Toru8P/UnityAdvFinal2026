@@ -3733,10 +3733,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5562815b703e143ca8115d35fd3bd63b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UIDef::_Code.UI.PauseMenuNavigationHelper
-  resumeButton: {fileID: 0}
-  level1Button: {fileID: 0}
-  level2Button: {fileID: 0}
-  level3Button: {fileID: 0}
+  resumeButton: {fileID: 9125615207594251001}
+  restartButton: {fileID: 3862262061394310764}
+  exitToMenuButton: {fileID: 247195238058988584}
 --- !u!1 &7165430923303272225
 GameObject:
   m_ObjectHideFlags: 0
@@ -4169,7 +4168,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1296334181837249786
 RectTransform:
   m_ObjectHideFlags: 0
