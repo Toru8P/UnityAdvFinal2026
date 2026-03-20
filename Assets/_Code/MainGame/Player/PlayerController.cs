@@ -46,6 +46,8 @@ namespace _Code.MainGame.Player
         private Vector2 _dashDirection;
         private readonly RaycastHit2D[] _hits = new RaycastHit2D[8];
 
+        private InputAction.CallbackContext _context;
+
         [CanBeNull] private BuffAttachment _activeBuff;
 
         public bool IsAlive => _isAlive;

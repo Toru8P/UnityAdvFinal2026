@@ -1,3 +1,4 @@
+using _Code.UI.MenuNavigation;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,15 +17,19 @@ namespace _Code.UI
         
         [SerializeField] private GameObject lostCanvas;
         [SerializeField] private GameObject winCanvas;
+
+        private GameObject _currentlyActive;
         
         public void Awake()
         {
-            if (GetComponent<UniversalSelectionFrame>() == null)
-                gameObject.AddComponent<UniversalSelectionFrame>();
             Reset();
             startCanvas?.SetActive(true);
-            if (turnOnTutorial) tutorialCanvas?.SetActive(true);
-            gameCanvas?.SetActive(true);
+            if (turnOnTutorial)
+            {
+                tutorialCanvas?.SetActive(true);
+                gameCanvas?.SetActive(true);
+            }
+            _currentlyActive = startCanvas;
             SelectFirstInActiveCanvas();
         }
         
@@ -32,6 +37,7 @@ namespace _Code.UI
         {
             Reset();
             lostCanvas.SetActive(true);
+            _currentlyActive = lostCanvas;
             SelectFirstInActiveCanvas();
         }
 
@@ -39,6 +45,7 @@ namespace _Code.UI
         {
             Reset();
             winCanvas.SetActive(true);
+            _currentlyActive = winCanvas;
             SelectFirstInActiveCanvas();
         }
 
@@ -46,6 +53,8 @@ namespace _Code.UI
         {
             Reset();
             gameCanvas.SetActive(true);
+            _currentlyActive = gameCanvas;
+
             SelectFirstInActiveCanvas();
         }
         
@@ -53,6 +62,7 @@ namespace _Code.UI
         {
             Reset();
             pauseCanvas?.SetActive(true);
+            _currentlyActive = pauseCanvas;
             SelectFirstInActiveCanvas();
         }
 
@@ -60,38 +70,43 @@ namespace _Code.UI
         {
             Reset();
             gameCanvas?.SetActive(true);
+            _currentlyActive = gameCanvas;
             SelectFirstInActiveCanvas();
         }
 
         private void Reset()
         {
             startCanvas?.SetActive(false);
-            tutorialCanvas?.SetActive(false);
+            if (tutorialCanvas) tutorialCanvas.SetActive(false);
             gameCanvas?.SetActive(false);
             pauseCanvas?.SetActive(false);
             
             lostCanvas?.SetActive(false);
             winCanvas?.SetActive(false);
+            _currentlyActive = null;
         }
 
         private void SelectFirstInActiveCanvas()
         {
-            if (EventSystem.current == null) return;
+            if (!EventSystem.current) return;
+            if (!_currentlyActive) return;
 
-            var active = startCanvas != null && startCanvas.activeInHierarchy ? startCanvas
-                : gameCanvas != null && gameCanvas.activeInHierarchy ? gameCanvas
-                : pauseCanvas != null && pauseCanvas.activeInHierarchy ? pauseCanvas
-                : lostCanvas != null && lostCanvas.activeInHierarchy ? lostCanvas
-                : winCanvas != null && winCanvas.activeInHierarchy ? winCanvas
-                : null;
+            Selectable selectable = _currentlyActive.GetComponentInChildren<Selectable>(true);
+            if (!selectable) return;
 
-            if (active == null) return;
-
-            var selectable = active.GetComponentInChildren<Selectable>(true);
-            while (selectable != null && !selectable.interactable)
-                selectable = selectable.FindSelectableOnDown();
-            if (selectable != null && selectable.interactable)
-                EventSystem.current.SetSelectedGameObject(selectable.gameObject);
+            while (true)
+            {
+                if (!selectable.interactable)
+                {
+                    selectable = selectable.FindSelectableOnDown();
+                    if (!selectable) break;
+                }
+                else
+                {
+                    EventSystem.current.SetSelectedGameObject(selectable.gameObject);
+                    break;
+                }
+            }
         }
     }
 }

@@ -21,6 +21,8 @@ namespace _Code.MainGame
         {
             if (!IsPaused) return;
             IsPaused = false;
+            Debug.Log("Resume");
+
 
             Time.timeScale = Mathf.Approximately(_previousTimeScale, 0f) ? 1f : _previousTimeScale;
         }
@@ -29,6 +31,7 @@ namespace _Code.MainGame
         {
             if (IsPaused) return;
             IsPaused = true;
+            Debug.Log("Pause");
 
             _previousTimeScale = Time.timeScale;
             Time.timeScale = 0f;
