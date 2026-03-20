@@ -2,6 +2,7 @@ using _Code.MainGame.Buff;
 using _Code.MainGame.Enemy;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace _Code.MainGame.Player
@@ -14,10 +15,16 @@ namespace _Code.MainGame.Player
         [Header("Movement Settings")]
         [SerializeField] private float moveSpeed = 4f;
 
-        [Header("Input Settings")]
-        // PlayerInput sits on the parent and sends Unity Events into Move().
-        [SerializeField] private PlayerInput playerInput;
+        [Header("Dash Settings")]
+        [SerializeField] private float dashSpeed = 15f;
+        [SerializeField] private float dashTime = 0.25f;
+        [SerializeField] private float dashCooldown = 3f;
+        [SerializeField] private UnityEvent<float> onStartDash;
 
+        
+        [Header("Death settings")]
+        [SerializeField] private UnityEvent onDeath;
+        
         [Header("Hit Detection Settings")]
         [SerializeField] private float skin = 0.02f;
         [SerializeField] private LayerMask obstacleMask;
@@ -29,9 +36,14 @@ namespace _Code.MainGame.Player
         public AudioClip[] footstepClips;
 
         private bool _isAlive = true;
+        private bool _isDashing;
+
+        private float _dashTimeLeft;
+        private float _dashCooldownLeft;
 
         private Collider2D _col;
         private Vector2 _moveInput;
+        private Vector2 _dashDirection;
         private readonly RaycastHit2D[] _hits = new RaycastHit2D[8];
 
         private InputAction.CallbackContext _context;
@@ -48,9 +60,6 @@ namespace _Code.MainGame.Player
         private void Awake()
         {
             _col = GetComponent<Collider2D>();
-
-            if (!playerInput)
-                playerInput = GetComponentInParent<PlayerInput>();
         }
 
         // Called by the PlayerInput Unity Event.
@@ -63,9 +72,31 @@ namespace _Code.MainGame.Player
             _moveInput = Vector2.ClampMagnitude(_moveInput, 1f);
         }
 
+        // Called by the PlayerInput Unity Event.
+        // Dash stores the direction once, then keeps using that same direction until it ends.
+        public void Dash(InputAction.CallbackContext context)
+        {
+            if (!_isAlive) return;
+            if (!context.performed) return;
+            if (_isDashing) return;
+            if (_dashCooldownLeft > 0f) return;
+
+            // Dash needs a move direction at the moment the button is pressed.
+            if (_moveInput.sqrMagnitude <= 0.01f) return;
+
+            _isDashing = true;
+            _dashTimeLeft = dashTime;
+            _dashCooldownLeft = dashCooldown;
+            _dashDirection = _moveInput.normalized;
+
+            onStartDash?.Invoke(dashCooldown);
+        }
+
         private void Update()
         {
             if (!_isAlive) return;
+
+            UpdateDashCooldown();
 
             // Buff lifetime still updates here so timing stays frame-based.
             if (_activeBuff != null)
@@ -74,11 +105,23 @@ namespace _Code.MainGame.Player
                 if (_activeBuff.IsExpired) _activeBuff = null;
             }
 
-            // Movement is still driven from Update.
-            // Move() only feeds the input value into this.
-            UpdateMovement();
+            // Normal movement is paused while dash is active.
+            // Move() can still receive input, but dash uses its stored direction.
+            if (_isDashing)
+                UpdateDash();
+            else
+                UpdateMovement();
 
             HandleFootsteps();
+        }
+
+        private void UpdateDashCooldown()
+        {
+            if (_dashCooldownLeft <= 0f) return;
+
+            _dashCooldownLeft -= Time.deltaTime;
+            if (_dashCooldownLeft < 0f)
+                _dashCooldownLeft = 0f;
         }
 
         private void UpdateMovement()
@@ -91,9 +134,27 @@ namespace _Code.MainGame.Player
             MoveWithCollision(delta);
         }
 
+        private void UpdateDash()
+        {
+            // Dash uses the saved direction from the frame the dash started.
+            // Releasing move keys during dash will not stop it.
+            Vector2 delta = _dashDirection * (dashSpeed * Time.deltaTime);
+
+            // Dash goes through the same collision path as normal movement,
+            // so it still stops at walls and does not pass through them.
+            MoveWithCollision(delta);
+
+            _dashTimeLeft -= Time.deltaTime;
+            if (_dashTimeLeft > 0f) return;
+
+            _dashTimeLeft = 0f;
+            _isDashing = false;
+        }
+
         private void HandleFootsteps()
         {
-            if (!IsMoving || ActiveBuffType == BuffType.SpeedBoost)
+            // Footsteps stop during dash so the short burst does not sound like normal walking.
+            if (_isDashing || !IsMoving || ActiveBuffType == BuffType.SpeedBoost)
             {
                 _stepTimer = 0f;
                 return;
@@ -126,10 +187,11 @@ namespace _Code.MainGame.Player
             channel.NotifyPlayerDied(hitPoint);
 
             _moveInput = Vector2.zero;
+            _dashDirection = Vector2.zero;
+            _isDashing = false;
 
-            // Stops new input events after death.
-            playerInput?.DeactivateInput();
 
+            onDeath.Invoke();
             _isAlive = false;
         }
 

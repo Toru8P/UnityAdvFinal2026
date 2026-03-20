@@ -93053,6 +93053,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0b244101-e895-4b37-80b3-3b7d2e464009
     m_ActionName: 'UI/Submit[/DualSenseGamepadHID/buttonSouth]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3015541100729240089}
+        m_TargetAssemblyTypeName: _Code.MainGame.Player.PlayerController, MainGameDef
+        m_MethodName: Dash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f629b2e4-7649-43a1-bcd1-0cf74997f64c
+    m_ActionName: 'Player/Dash[/Keyboard/space]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -93237,6 +93253,101 @@ PrefabInstance:
       propertyPath: channel
       value: 
       objectReference: {fileID: 1485415924}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onStartDash.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1749059234}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1543783901}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPlayerDeath
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onStartDash.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6858865955647549343}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onStartDash.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onStartDash.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartCooldown
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: _Code.MainGame.Enemy.EnemySpawner, MainGameDef
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onStartDash.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: _Code.UI.DashCooldownUI, UIDef
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143158919615396745, guid: 16b17038ce8267f429636387186729f1,
+        type: 3}
+      propertyPath: onStartDash.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8484836336175983451, guid: 16b17038ce8267f429636387186729f1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -93631,6 +93742,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1f7037ca29c7b04e8598ab2fa41d1df, type: 3}
+--- !u!114 &6858865955647549343 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8946116751677043423, guid: a1f7037ca29c7b04e8598ab2fa41d1df,
+    type: 3}
+  m_PrefabInstance: {fileID: 6858865955647549342}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fa9bac4fc73844ba9f3c9b9c240d18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UIDef::_Code.MainGame.UI.DashCooldownUI
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

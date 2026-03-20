@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7440933288064320611}
   - component: {fileID: 1005994428197575628}
   - component: {fileID: 3030522681464480912}
+  - component: {fileID: 3660589899258911818}
   m_Layer: 0
   m_Name: Enemy Low
   m_TagString: Enemy
@@ -265,6 +266,60 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3660589899258911818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377191867016112115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.ShadowCaster2D
+  m_ShadowGroup: 0
+  m_Priority: 3
+  m_ComponentVersion: 5
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_AlphaCutoff: 0.1
+  m_ApplyToSortingLayers: 0000000003819490c93960fdb391b5f93d06c18fad9b251b2b4229caff466ec3
+  m_ShapePath:
+  - {x: -0.8858474, y: -1.32, z: 0}
+  - {x: -0.8858474, y: 1.32, z: 0}
+  - {x: 0.8858474, y: 1.32, z: 0}
+  - {x: 0.8858474, y: -1.32, z: 0}
+  m_ShapePathHash: 0
+  m_InstanceId: 0
+  m_ShadowShape2DComponent: {fileID: 4182625389145186796}
+  m_ShadowShape2DProvider:
+    rid: 432803432778694727
+  m_ShadowCastingSource: 2
+  m_ShadowMesh:
+    m_Mesh: {fileID: 0}
+    m_LocalBounds:
+      m_Center: {x: 0.023910522, y: 0.02016449, z: 0}
+      m_Extent: {x: 0.88438416, y: 1.3215103, z: 0}
+    m_EdgeProcessing: 1
+    m_TrimEdge: 0.02
+    m_FlipX: 0
+    m_FlipY: 0
+    m_InitialTrim: 0
+  m_CastingOption: 1
+  m_PreviousTrimEdge: 0.02
+  m_PreviousEdgeProcessing: 1
+  m_PreviousShadowCastingSource: 2
+  m_PreviousShadowShape2DSource: {fileID: 4182625389145186796}
+  references:
+    version: 2
+    RefIds:
+    - rid: 432803432778694727
+      type: {class: ShadowShape2DProvider_SpriteRenderer, ns: UnityEngine.Rendering.Universal,
+        asm: Unity.RenderPipelines.Universal.2D.Runtime}
+      data: 
 --- !u!1 &4299448643466704836
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.Light2D
   m_ComponentVersion: 2
-  m_LightType: 1
+  m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.767
   m_Color: {r: 1, g: 0.64716977, b: 0.64716977, a: 1}
@@ -320,7 +375,7 @@ MonoBehaviour:
   m_ApplyToSortingLayers: 0000000003819490c93960fdb391b5f93d06c18fad9b251b2b4229ca
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
-  m_LightOrder: 0
+  m_LightOrder: 1
   m_AlphaBlendOnOverlap: 0
   m_OverlapOperation: 1
   m_NormalMapDistance: 3
@@ -333,8 +388,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -3.48215, y: 0.67114997, z: 0}
-    m_Extent: {x: 3.89885, y: 3.86105, z: 0}
+    m_Center: {x: 0, y: -0.00000011920929, z: 0}
+    m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
