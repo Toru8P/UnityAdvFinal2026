@@ -1307,24 +1307,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1821392815597665669, guid: 3f67a03b6171b914c9bc1d9328aad2d7,
         type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1821392815597665669, guid: 3f67a03b6171b914c9bc1d9328aad2d7,
-        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 7099242023938548518}
-    - target: {fileID: 1821392815597665669, guid: 3f67a03b6171b914c9bc1d9328aad2d7,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Code.MainGame.PauseManager, MainGameDef
-      objectReference: {fileID: 0}
-    - target: {fileID: 1821392815597665669, guid: 3f67a03b6171b914c9bc1d9328aad2d7,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: _Code.UI.CanvasSwitcher, UIDef
-      objectReference: {fileID: 0}
     - target: {fileID: 3147346755200157032, guid: 3f67a03b6171b914c9bc1d9328aad2d7,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1452,11 +1437,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2330166054956914447, guid: b15a8080ae3481244b03ddf0ffd25567,
         type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2330166054956914447, guid: b15a8080ae3481244b03ddf0ffd25567,
-        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 7099242023938548518}
@@ -1565,16 +1545,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5028560758758063643, guid: b15a8080ae3481244b03ddf0ffd25567,
-        type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5122596236062838384, guid: b15a8080ae3481244b03ddf0ffd25567,
-        type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1607,24 +1577,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3311912969056476975, guid: 3e9f5f75e32802341a58c0d95674ee8b,
         type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3311912969056476975, guid: 3e9f5f75e32802341a58c0d95674ee8b,
-        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 7099242023938548518}
-    - target: {fileID: 3311912969056476975, guid: 3e9f5f75e32802341a58c0d95674ee8b,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Code.MainGame.PauseManager, MainGameDef
-      objectReference: {fileID: 0}
-    - target: {fileID: 3311912969056476975, guid: 3e9f5f75e32802341a58c0d95674ee8b,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: _Code.UI.CanvasSwitcher, UIDef
-      objectReference: {fileID: 0}
     - target: {fileID: 8041779535366529249, guid: 3e9f5f75e32802341a58c0d95674ee8b,
         type: 3}
       propertyPath: m_Pivot.x
