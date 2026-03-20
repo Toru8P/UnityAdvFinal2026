@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace _Code.Save
+namespace _Code.MainGame.Save
 {
     // Saves and loads progress to JSON in Application.persistentDataPath.
     public static class SaveManager
@@ -27,6 +27,8 @@ namespace _Code.Save
                 {
                     string json = File.ReadAllText(path);
                     _cached = JsonUtility.FromJson<SaveData>(json);
+                    Debug.Log($"[SaveManager] Load completed, path: {path}");
+
                     if (_cached == null)
                         _cached = new SaveData();
                     return _cached;
@@ -69,6 +71,7 @@ namespace _Code.Save
                 string path = GetSavePath();
                 string json = JsonUtility.ToJson(data, prettyPrint: true);
                 File.WriteAllText(path, json);
+                Debug.Log($"[SaveManager] Saved to {path}");
             }
             catch (Exception e)
             {

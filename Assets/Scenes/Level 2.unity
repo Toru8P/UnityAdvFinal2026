@@ -406,6 +406,7 @@ GameObject:
   - component: {fileID: 595013487}
   - component: {fileID: 595013486}
   - component: {fileID: 595013488}
+  - component: {fileID: 595013489}
   m_Layer: 0
   m_Name: WinCondition
   m_TagString: Untagged
@@ -483,6 +484,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 595013489}
+        m_TargetAssemblyTypeName: _Code.MainGame.Save.ProgressSaver, MainGameDef
+        m_MethodName: ReportLevelComplete
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   loseConditionEvent:
     m_PersistentCalls:
       m_Calls:
@@ -523,6 +536,18 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   levelMusic: {fileID: 1218570849}
+--- !u!114 &595013489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595013485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0639d3953794342238371d3b8f5aa85e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MainGameDef::_Code.MainGame.Save.ProgressSaver
 --- !u!1 &676108082
 GameObject:
   m_ObjectHideFlags: 0
@@ -93687,17 +93712,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 467982722939306656, guid: a1f7037ca29c7b04e8598ab2fa41d1df,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1126610750}
     - target: {fileID: 1507648632314681602, guid: a1f7037ca29c7b04e8598ab2fa41d1df,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1126610750}
-    - target: {fileID: 1859177540307687463, guid: a1f7037ca29c7b04e8598ab2fa41d1df,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1126610750}
-    - target: {fileID: 3816931582172768746, guid: a1f7037ca29c7b04e8598ab2fa41d1df,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -93712,31 +93732,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1126610750}
-    - target: {fileID: 6863266853557967861, guid: a1f7037ca29c7b04e8598ab2fa41d1df,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 1030929351}
-    - target: {fileID: 6863266853557967861, guid: a1f7037ca29c7b04e8598ab2fa41d1df,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ResumeGame
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863266853557967861, guid: a1f7037ca29c7b04e8598ab2fa41d1df,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: OnGameStart
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863266853557967861, guid: a1f7037ca29c7b04e8598ab2fa41d1df,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: _Code.MainGame.PauseManager, MainGameDef
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863266853557967861, guid: a1f7037ca29c7b04e8598ab2fa41d1df,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: _Code.UI.CanvasSwitcher, UIDef
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

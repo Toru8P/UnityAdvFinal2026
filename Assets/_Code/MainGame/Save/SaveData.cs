@@ -1,6 +1,6 @@
 using System;
 
-namespace _Code.Save
+namespace _Code.MainGame.Save
 {
     // Persistent progress data. HighestCompletedLevel is 1-based (1 = Level 1 completed).
     [Serializable]
@@ -8,6 +8,11 @@ namespace _Code.Save
     {
         public const int MinLevel = 1;
         public const int MaxLevel = 3;
+        
+        public float MasterVolume = 0f;
+        public float MusicVolume = 0f;
+        public float EffectsVolume = 0f;
+
 
         // Highest level the player has completed (1 = Level 1, 2 = Level 2, 3 = Level 3). 0 = none.
         public int HighestCompletedLevel;

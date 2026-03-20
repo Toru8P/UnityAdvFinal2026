@@ -489,6 +489,7 @@ GameObject:
   - component: {fileID: 595013487}
   - component: {fileID: 595013486}
   - component: {fileID: 595013488}
+  - component: {fileID: 595013489}
   m_Layer: 0
   m_Name: WinCondition
   m_TagString: Untagged
@@ -566,6 +567,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 595013489}
+        m_TargetAssemblyTypeName: _Code.MainGame.Save.ProgressSaver, MainGameDef
+        m_MethodName: ReportLevelComplete
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   loseConditionEvent:
     m_PersistentCalls:
       m_Calls:
@@ -606,6 +619,18 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   levelMusic: {fileID: 850926836}
+--- !u!114 &595013489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595013485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0639d3953794342238371d3b8f5aa85e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MainGameDef::_Code.MainGame.Save.ProgressSaver
 --- !u!1 &676108082
 GameObject:
   m_ObjectHideFlags: 0
