@@ -49,6 +49,11 @@ namespace _Code.MainGame.Enemy
         {
             _continueSpawning = false;
         }
+
+        public void OnPlayerDeath()
+        {
+            StopSpawning();
+        }
     
         private void SpawnEnemy()
         {
