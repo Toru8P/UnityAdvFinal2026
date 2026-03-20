@@ -22,8 +22,6 @@ namespace _Code.UI
         
         public void Awake()
         {
-            if (GetComponent<UniversalSelectionFrame>() == null)
-                gameObject.AddComponent<UniversalSelectionFrame>();
             Reset();
             startCanvas?.SetActive(true);
             if (turnOnTutorial)
@@ -79,7 +77,7 @@ namespace _Code.UI
         private void Reset()
         {
             startCanvas?.SetActive(false);
-            tutorialCanvas?.SetActive(false);
+            if (tutorialCanvas) tutorialCanvas.SetActive(false);
             gameCanvas?.SetActive(false);
             pauseCanvas?.SetActive(false);
             

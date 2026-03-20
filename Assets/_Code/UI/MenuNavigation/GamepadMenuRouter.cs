@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace _Code.UI.MenuNavigation
 {
-    public class MenuInputRouter : MonoBehaviour
+    public class GamepadMenuRouter : MonoBehaviour
     {
         [SerializeField] private GlobalMenuNavigator navigator;
 
@@ -13,6 +13,8 @@ namespace _Code.UI.MenuNavigation
         public void OnNavigate(InputAction.CallbackContext ctx)
         {
             if (!ctx.performed) return;
+            
+            Debug.Log($"Navigating to {ctx.action.name}");
 
             Vector2 v = ctx.ReadValue<Vector2>();
             if (Time.unscaledTime - _lastMoveTime < repeatDelay)
@@ -29,5 +31,14 @@ namespace _Code.UI.MenuNavigation
                 _lastMoveTime = Time.unscaledTime;
             }
         }
+        
+        
+        public void OnSubmit(InputAction.CallbackContext ctx)
+        {
+            if (!ctx.performed) return;
+
+            navigator.SubmitCurrent();
+        }
+
     }
 }

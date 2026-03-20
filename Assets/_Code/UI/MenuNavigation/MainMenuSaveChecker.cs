@@ -1,19 +1,16 @@
-﻿using UnityEngine;
+﻿using _Code.Save;
+using UnityEngine;
 using UnityEngine.UI;
-using _Code.Save;
 
-namespace _Code.UI
+namespace _Code.UI.MenuNavigation
 {
-    public class MainMenuController : MonoBehaviour
+    public class MainMenuSaveChecker : MonoBehaviour
     {
         [Header("Level select")]
         [SerializeField] private Button level1Button;
         [SerializeField] private Button level2Button;
         [SerializeField] private Button level3Button;
-
-        [Header("Main menu")]
-        [SerializeField] private Button newGameButton;
-
+        
         private void Start()
         {
             SaveManager.InvalidateCache();

@@ -1,10 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using _Code.UI.MenuNavigation;
 
-namespace _Code.UI
+namespace _Code.UI.MenuNavigation
 {
     public class GlobalMenuNavigator : MonoBehaviour
     {
@@ -22,9 +21,34 @@ namespace _Code.UI
         {
             CreateFramesForAllCanvases();
         }
+        
+        public void SubmitCurrent()
+        {
+            if (_index < 0 || _index >= orderedButtons.Count)
+                return;
 
+            var sel = orderedButtons[_index];
+            if (!IsSelectableValid(sel))
+                return;
+
+            // Support Buttons
+            var button = sel.GetComponent<Button>();
+            if (button)
+            {
+                button.onClick.Invoke();
+                return;
+            }
+
+            // Support all Selectables (Dropdown, Toggle, Slider…)
+            ExecuteEvents.Execute(sel.gameObject,
+                new BaseEventData(EventSystem.current),
+                ExecuteEvents.submitHandler);
+        }
+
+ 
         private void OnEnable()
         {
+            EventSystem.current.SetSelectedGameObject(null); // prevent Unity auto-selection
             SelectFirstInteractable();
         }
 
@@ -56,7 +80,7 @@ namespace _Code.UI
                 i = (i + direction + orderedButtons.Count) % orderedButtons.Count;
 
                 var sel = orderedButtons[i];
-                if (sel && sel.interactable)
+                if (IsSelectableValid(sel))
                 {
                     SelectIndex(i);
                     return;
@@ -64,6 +88,22 @@ namespace _Code.UI
 
             } while (i != start);
         }
+        
+        
+        private bool IsSelectableValid(Selectable sel)
+        {
+            if (!sel) return false;
+            if (!sel.interactable) return false;
+
+            // UI object enabled?
+            if (!sel.enabled) return false;
+
+            // GameObject active?
+            if (!sel.gameObject.activeInHierarchy) return false;
+
+            return true;
+        }
+
 
         private void SelectFirstInteractable()
         {
