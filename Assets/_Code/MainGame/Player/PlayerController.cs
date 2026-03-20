@@ -15,7 +15,8 @@ namespace _Code.MainGame.Player
         [SerializeField] private float moveSpeed = 4f;
 
         [Header("Input Settings")]
-        [SerializeField] private InputActionReference moveAction;
+        // PlayerInput sits on the parent and sends Unity Events into Move().
+        [SerializeField] private PlayerInput playerInput;
 
         [Header("Hit Detection Settings")]
         [SerializeField] private float skin = 0.02f;
@@ -33,6 +34,8 @@ namespace _Code.MainGame.Player
         private Vector2 _moveInput;
         private readonly RaycastHit2D[] _hits = new RaycastHit2D[8];
 
+        private InputAction.CallbackContext _context;
+
         [CanBeNull] private BuffAttachment _activeBuff;
 
         public bool IsAlive => _isAlive;
@@ -45,44 +48,47 @@ namespace _Code.MainGame.Player
         private void Awake()
         {
             _col = GetComponent<Collider2D>();
+
+            if (!playerInput)
+                playerInput = GetComponentInParent<PlayerInput>();
         }
 
-        private void OnEnable()
+        // Called by the PlayerInput Unity Event.
+        // This only stores the latest move direction.
+        public void Move(InputAction.CallbackContext context)
         {
-            if (moveAction)
-                moveAction.action.Enable();
-        }
+            if (!_isAlive) return;
 
-        private void OnDisable()
-        {
-            if (moveAction)
-                moveAction.action.Disable();
+            _moveInput = context.ReadValue<Vector2>();
+            _moveInput = Vector2.ClampMagnitude(_moveInput, 1f);
         }
 
         private void Update()
         {
             if (!_isAlive) return;
 
-            // Buff lifetime update stays gameplay-side
+            // Buff lifetime still updates here so timing stays frame-based.
             if (_activeBuff != null)
             {
                 _activeBuff.Update(Time.deltaTime);
                 if (_activeBuff.IsExpired) _activeBuff = null;
             }
 
-            // Input + movement stays gameplay-side
-            _moveInput = moveAction.action.ReadValue<Vector2>();
-            _moveInput = Vector2.ClampMagnitude(_moveInput, 1f);
+            // Movement is still driven from Update.
+            // Move() only feeds the input value into this.
+            UpdateMovement();
 
+            HandleFootsteps();
+        }
+
+        private void UpdateMovement()
+        {
             float speed = moveSpeed;
             if (_activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost)
                 speed += _activeBuff.Value;
 
             Vector2 delta = _moveInput * (speed * Time.deltaTime);
             MoveWithCollision(delta);
-
-            // Footsteps stays gameplay-side (or can also be moved to visuals)
-            HandleFootsteps();
         }
 
         private void HandleFootsteps()
@@ -110,18 +116,20 @@ namespace _Code.MainGame.Player
             {
                 _activeBuff = null;
 
-                
                 Vector2 away = (other.ClosestPoint(transform.position) - (Vector2)transform.position).normalized;
                 other.GetComponentInParent<EnemyController>()?.Knock(away);
-
 
                 return;
             }
 
-
             Vector2 hitPoint = other.ClosestPoint(transform.position);
             channel.NotifyPlayerDied(hitPoint);
-            moveAction.action.Disable();
+
+            _moveInput = Vector2.zero;
+
+            // Stops new input events after death.
+            playerInput?.DeactivateInput();
+
             _isAlive = false;
         }
 
@@ -129,9 +137,86 @@ namespace _Code.MainGame.Player
         {
             if (delta == Vector2.zero) return;
 
-            Vector2 dir = delta.normalized;
-            float dist = delta.magnitude;
+            // Straight movement can still use one simple axis move.
+            if (Mathf.Approximately(delta.x, 0f) || Mathf.Approximately(delta.y, 0f))
+            {
+                MoveAlongAxis(delta);
+                return;
+            }
 
+            // Diagonal movement needs a small wall-slide check.
+            // If one axis is blocked, the other axis gets the full move speed.
+            MoveWithWallSlide(delta);
+        }
+
+        private void MoveWithWallSlide(Vector2 delta)
+        {
+            float totalDist = delta.magnitude;
+
+            Vector2 xDir = Vector2.right * Mathf.Sign(delta.x);
+            Vector2 yDir = Vector2.up * Mathf.Sign(delta.y);
+
+            float xRequested = Mathf.Abs(delta.x);
+            float yRequested = Mathf.Abs(delta.y);
+
+            // Check each axis by itself first.
+            // This tells us if a wall is blocking only one side of the diagonal move.
+            float xAllowed = GetAllowedDistance(xDir, xRequested);
+            float yAllowed = GetAllowedDistance(yDir, yRequested);
+
+            bool xBlocked = xAllowed + 0.0001f < xRequested;
+            bool yBlocked = yAllowed + 0.0001f < yRequested;
+
+            if (xBlocked && yBlocked)
+                return;
+
+            // If vertical is blocked but horizontal is open,
+            // slide horizontally at full speed instead of diagonal speed.
+            if (yBlocked && !xBlocked)
+            {
+                MoveAlongAxis(xDir * totalDist);
+                return;
+            }
+
+            // If horizontal is blocked but vertical is open,
+            // slide vertically at full speed instead of diagonal speed.
+            if (xBlocked && !yBlocked)
+            {
+                MoveAlongAxis(yDir * totalDist);
+                return;
+            }
+
+            // When both axes are open, keep the normal diagonal move.
+            // Larger axis goes first to make corners feel a bit more stable.
+            if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+            {
+                MoveAlongAxis(Vector2.right * delta.x);
+                MoveAlongAxis(Vector2.up * delta.y);
+            }
+            else
+            {
+                MoveAlongAxis(Vector2.up * delta.y);
+                MoveAlongAxis(Vector2.right * delta.x);
+            }
+        }
+
+        private void MoveAlongAxis(Vector2 axisDelta)
+        {
+            if (axisDelta == Vector2.zero) return;
+
+            // Same collision test as before, now reused for one axis at a time.
+            Vector2 dir = axisDelta.normalized;
+            float dist = axisDelta.magnitude;
+
+            float allowed = GetAllowedDistance(dir, dist);
+            transform.position += (Vector3)(dir * allowed);
+        }
+
+        private float GetAllowedDistance(Vector2 dir, float dist)
+        {
+            if (dist <= 0f) return 0f;
+
+            // Cast the collider forward and stop right before the wall.
             ContactFilter2D filter = new ContactFilter2D
             {
                 useLayerMask = true,
@@ -150,7 +235,7 @@ namespace _Code.MainGame.Player
                     allowed = Mathf.Max(0f, d);
             }
 
-            transform.position += (Vector3)(dir * allowed);
+            return allowed;
         }
 
         private void PlayFootstep()

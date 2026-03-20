@@ -8,11 +8,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1005994428197575628, guid: c36fdcdabe3d3f24a9afda7cf9bc613d,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.6200001
+      objectReference: {fileID: 0}
     - target: {fileID: 1377191867016112115, guid: c36fdcdabe3d3f24a9afda7cf9bc613d,
         type: 3}
       propertyPath: m_Name
       value: Enemy Hi
       objectReference: {fileID: 0}
+    - target: {fileID: 3030522681464480912, guid: c36fdcdabe3d3f24a9afda7cf9bc613d,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 730845b6cfffa0e43a17aa3bc22a9e59,
+        type: 2}
     - target: {fileID: 4182625389145186796, guid: c36fdcdabe3d3f24a9afda7cf9bc613d,
         type: 3}
       propertyPath: m_Sprite

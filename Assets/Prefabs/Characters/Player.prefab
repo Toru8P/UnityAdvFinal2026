@@ -185,8 +185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   channel: {fileID: 0}
   moveSpeed: 5
-  moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100,
-    type: 3}
+  playerInput: {fileID: 0}
   skin: 0.05
   obstacleMask:
     serializedVersion: 2
@@ -337,7 +336,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4994107300708991033
 Transform:
   m_ObjectHideFlags: 0
