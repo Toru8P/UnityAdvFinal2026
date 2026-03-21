@@ -50,7 +50,6 @@ namespace _Code.MainGame.WinCondition
         {
             if (!timerText)
             {
-                Debug.LogWarning("No TextMeshProUGUI component found on WinConditionTimer.");
                 return;
             }
             timerText.text = $"Time: {currentTime:F1}s";

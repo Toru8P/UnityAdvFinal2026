@@ -91710,6 +91710,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 874923552271063812, guid: 3f649b0edfbb945478c33156c56b8c19,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.000030517578
+      objectReference: {fileID: 0}
     - target: {fileID: 1956545201253395940, guid: 3f649b0edfbb945478c33156c56b8c19,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -92152,6 +92157,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1fa9bac4fc73844ba9f3c9b9c240d18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UIDef::_Code.UI.DashCooldownUI
+--- !u!114 &1331037973923695441 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3940022224938180031, guid: 3f649b0edfbb945478c33156c56b8c19,
+    type: 3}
+  m_PrefabInstance: {fileID: 1331037973923695439}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &1331037973923695443 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2833283790092390825, guid: 3f649b0edfbb945478c33156c56b8c19,
@@ -92311,6 +92328,11 @@ PrefabInstance:
       propertyPath: enemiesHaveLight
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 127290390678300519, guid: 8d33c46e8d6d92d4fb509a060281d231,
+        type: 3}
+      propertyPath: enemiesCounterText
+      value: 
+      objectReference: {fileID: 1331037973923695441}
     - target: {fileID: 256785377378419663, guid: 8d33c46e8d6d92d4fb509a060281d231,
         type: 3}
       propertyPath: m_LocalPosition.x

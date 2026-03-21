@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Code.MainGame.Enemy.Difficulty;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 namespace _Code.MainGame.Enemy
 {
@@ -28,6 +31,9 @@ namespace _Code.MainGame.Enemy
         [Header("Difficulty Settings")]
         [SerializeField] private float currentSpeed;
         
+        [Header("Visual Enemies Counter")]
+        [SerializeField] private TextMeshProUGUI enemiesCounterText;
+        
         private int _spawnCounter;
         private bool _continueSpawning = true;
     
@@ -42,6 +48,20 @@ namespace _Code.MainGame.Enemy
                 SpawnEnemy();
                 yield return new WaitForSeconds(spawnInterval);
             }
+        }
+
+        private void LateUpdate()
+        {
+             UpdateEnemiesCounterText();
+        }
+
+        private void UpdateEnemiesCounterText()
+        {
+            if (!enemiesCounterText)
+            {
+                return;
+            }
+            enemiesCounterText.text = $"Enemies: {_spawnCounter}";
         }
         
         public void StopSpawning()
