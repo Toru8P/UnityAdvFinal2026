@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Code.MainGame.Enemy.Difficulty;
+using _Code.MainGame.Level;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -23,7 +24,10 @@ namespace _Code.MainGame.Enemy
         [Header("Spawn Settings")]
         [SerializeField] private float spawnInterval = 2f;
         [SerializeField] private int maxEnemies = 10; 
-        [SerializeField] private Tilemap spawnZone;
+
+        [Header("References")]
+        // LevelSpawner now owns the tile lookup and free spot reservation logic.
+        [SerializeField] private LevelSpawner levelSpawner;
 
         [Header("Enemy Light Settings")]
         [SerializeField] private bool enemiesHaveLight = false;
@@ -37,10 +41,8 @@ namespace _Code.MainGame.Enemy
         private int _spawnCounter;
         private bool _continueSpawning = true;
     
-        private float timer;
-    
-        private List<Vector3Int> availableCells;
-    
+        private float _timer;
+        
         private IEnumerator SpawnEnemies()
         {
             while (_spawnCounter < maxEnemies && _continueSpawning)
@@ -78,7 +80,8 @@ namespace _Code.MainGame.Enemy
         {
             if (_continueSpawning && enemyLowPrefab && enemyMidPrefab && enemyHiPrefab && target)
             {
-                Vector3Int randomCell = availableCells[Random.Range(0, availableCells.Count-1)];
+                if (!levelSpawner.TryReserveRandomSpawnPosition(out var spawnPosition, out _))
+                    return;
                 
                 GameObject enemyPrefab = null;
                 switch (currentSpeed)
@@ -93,7 +96,7 @@ namespace _Code.MainGame.Enemy
                         enemyPrefab = enemyHiPrefab;
                         break;
                 }
-                GameObject enemy = Instantiate(enemyPrefab, randomCell, Quaternion.identity);
+                GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
                 EnemyController controller = enemy.GetComponent<EnemyController>();
                 if (controller)
@@ -111,18 +114,6 @@ namespace _Code.MainGame.Enemy
         {
             DifficultySystem difficultySystem = GetComponent<DifficultySystem>();
             difficultySystem.SubscribeToDifficultyUpdate(OnDifficultyChanged);
-            
-            availableCells = new List<Vector3Int>();
-            BoundsInt bounds = spawnZone.cellBounds;
-
-            foreach (Vector3Int cell in bounds.allPositionsWithin)
-            {
-                if (spawnZone.HasTile(cell))
-                {
-                    availableCells.Add(cell);
-                }
-            }
-        
             StartCoroutine(SpawnEnemies());
         }
         

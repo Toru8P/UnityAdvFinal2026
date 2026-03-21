@@ -10,9 +10,6 @@ namespace _Code.MainGame.Level
         [Tooltip("Tiles that are allowed to spawn gameplay objects.")]
         [SerializeField] private Tilemap spawnZone;
 
-        [Tooltip("Tiles that block spawning, like walls or map obstacles.")]
-        [SerializeField] private Tilemap obstacleZone;
-
         private readonly List<Vector3Int> _validCells = new();
         private readonly HashSet<Vector3Int> _occupiedCells = new();
 
@@ -41,16 +38,6 @@ namespace _Code.MainGame.Level
             {
                 if (spawnZone.HasTile(cell))
                     _validCells.Add(cell);
-            }
-
-            if (obstacleZone)
-            {
-                // Any blocked tile is removed now, so later spawns only look at valid floor cells.
-                for (var i = _validCells.Count - 1; i >= 0; i--)
-                {
-                    if (obstacleZone.HasTile(_validCells[i]))
-                        _validCells.RemoveAt(i);
-                }
             }
 
             _isInitialized = true;
