@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace _Code.Save
+namespace _Code.MainGame.Save
 {
-    // Used from WinConditionManager's winConditionEvent to record level completion and persist progress.
     public class ProgressSaver : MonoBehaviour
     {
         public void ReportLevelComplete()

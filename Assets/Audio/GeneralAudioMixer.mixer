@@ -44,12 +44,14 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
+  - guid: 961f539c1ecaa174eb857aeba0626d8d
+    name: EffectsVolume
   - guid: 3ea3f91958ff377438a413b813794003
     name: MyExposedParam
+  - guid: 9ae60a48b57e4554fb33ae5b0987656f
+    name: MasterVolume
   - guid: 783176c678d1ea24596e4937e2bab572
-    name: MyExposedParam 3
-  - guid: 961f539c1ecaa174eb857aeba0626d8d
-    name: MyExposedParam 2
+    name: MusicVolume
   - guid: 7ef66c36834defd43bbe5805975eb616
     name: MyExposedParam 1
   m_AudioMixerGroupViews:
@@ -74,7 +76,6 @@ AudioMixerGroupController:
   m_Children:
   - {fileID: 956101716300695992}
   - {fileID: 4267913281420073340}
-  - {fileID: 8020665454982527121}
   - {fileID: 2464575377834534599}
   m_Volume: 9ae60a48b57e4554fb33ae5b0987656f
   m_Pitch: 117f92d525c2c9f4d9feac19345f9399
@@ -155,10 +156,11 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SFX
+  m_Name: Effects
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 6b03c0f68f446d24e8cddd80fa132431
-  m_Children: []
+  m_Children:
+  - {fileID: 8020665454982527121}
   m_Volume: 961f539c1ecaa174eb857aeba0626d8d
   m_Pitch: a0b23486999a2e646a1c5f8fa570c38b
   m_Send: 00000000000000000000000000000000
