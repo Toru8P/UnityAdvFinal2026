@@ -34,6 +34,9 @@ namespace _Code.MainGame.Player
         private float _stepTimer = 0f;
         public AudioSource footstepSource;
         public AudioClip[] footstepClips;
+        
+        public AudioSource slideSource;
+        public AudioClip slideClip;
 
         private bool _isAlive = true;
         private bool _isDashing;
@@ -112,7 +115,8 @@ namespace _Code.MainGame.Player
             else
                 UpdateMovement();
 
-            HandleFootsteps();
+            HandleFootstepsSound();
+            HandleSlideSound();
         }
 
         private void UpdateDashCooldown()
@@ -151,7 +155,7 @@ namespace _Code.MainGame.Player
             _isDashing = false;
         }
 
-        private void HandleFootsteps()
+        private void HandleFootstepsSound()
         {
             // Footsteps stop during dash so the short burst does not sound like normal walking.
             if (_isDashing || !IsMoving || ActiveBuffType == BuffType.SpeedBoost)
@@ -163,10 +167,24 @@ namespace _Code.MainGame.Player
             _stepTimer -= Time.deltaTime;
             if (_stepTimer <= 0f)
             {
-                PlayFootstep();
+                PlayFootstepSound();
                 _stepTimer = stepInterval;
             }
         }
+
+
+        private void HandleSlideSound()
+        {
+            if (_activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost)
+            {
+                PlaySlideSoundLoop();
+            }
+            else
+            {
+                StopSlideSound();
+            }
+        }
+
 
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -300,14 +318,41 @@ namespace _Code.MainGame.Player
             return allowed;
         }
 
-        private void PlayFootstep()
+        private void PlayFootstepSound()
         {
             if (footstepClips == null || footstepClips.Length == 0) return;
             if (!footstepSource) return;
 
+            footstepSource.pitch = Random.Range(0.9f, 1.1f);
+
             footstepSource.clip = footstepClips[Random.Range(0, footstepClips.Length)];
             footstepSource.Play();
         }
+
+        private bool _isSlideSoundPlaying = false;
+
+        private void PlaySlideSoundLoop()
+        {
+            if (_isSlideSoundPlaying)
+                return;
+
+            footstepSource.pitch = 1f;
+            slideSource.loop = true;
+            slideSource.clip = slideClip;
+            slideSource.Play();
+            _isSlideSoundPlaying = true;
+        }
+        
+        
+        private void StopSlideSound()
+        {
+            if (!_isSlideSoundPlaying)
+                return;
+            slideSource.Stop();
+            slideSource.loop = false;
+            _isSlideSoundPlaying = false;
+        }
+
 
         public bool AttachBuff(BuffAttachment attachment)
         {

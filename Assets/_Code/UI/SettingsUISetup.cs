@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace _Code.UI
 {
-    public class AudioSettingsUI : MonoBehaviour
+    public class SettingsUISetup : MonoBehaviour
     {
         private const string MasterVolumeParam = "MasterVolume";
         private const string MusicVolumeParam = "MusicVolume";
@@ -16,9 +16,21 @@ namespace _Code.UI
         public Slider musicSlider;
         public Slider effectsSlider;
 
-
+        public Toggle minimapToggle;
+        public GameObject minimap;
 
         void Start()
+        {
+            ResyncValues();
+            
+            // AUTOMATIC EVENT SUBSCRIPTIONS
+            masterSlider.onValueChanged.AddListener(SetMasterVolume);
+            musicSlider.onValueChanged.AddListener(SetMusicVolume);
+            effectsSlider.onValueChanged.AddListener(SetEffectsVolume);
+            minimapToggle.onValueChanged.AddListener(ToggleMinimap);
+        }
+
+        public void ResyncValues()
         {
             var data = SaveManager.Load();
 
@@ -26,36 +38,38 @@ namespace _Code.UI
             audioMixer.SetFloat(MasterVolumeParam, data.MasterVolume);
             audioMixer.SetFloat(MusicVolumeParam, data.MusicVolume);
             audioMixer.SetFloat(EffectsVolumeParam, data.EffectsVolume);
-
+            minimap.SetActive(data.MinimapOpened);
+            
             // Set slider values
             masterSlider.value = data.MasterVolume;
             musicSlider.value = data.MusicVolume;
             effectsSlider.value = data.EffectsVolume;
-
-            // AUTOMATIC EVENT SUBSCRIPTIONS
-            masterSlider.onValueChanged.AddListener(SetMasterVolume);
-            musicSlider.onValueChanged.AddListener(SetMusicVolume);
-            effectsSlider.onValueChanged.AddListener(SetEffectsVolume);
+            minimapToggle.isOn = data.MinimapOpened;
         }
 
 
+        private void ToggleMinimap(bool value)
+        {
+            minimap.SetActive(value);
+            SaveManager.Load().MinimapOpened = minimap.activeSelf;
+            SaveManager.Save(SaveManager.Load());
+        }
 
-
-        public void SetMasterVolume(float value)
+        private void SetMasterVolume(float value)
         {
             audioMixer.SetFloat(MasterVolumeParam, value);
             SaveManager.Load().MasterVolume = value;
             SaveManager.Save(SaveManager.Load());
         }
 
-        public void SetMusicVolume(float value)
+        private void SetMusicVolume(float value)
         {
             audioMixer.SetFloat(MusicVolumeParam, value);
             SaveManager.Load().MusicVolume = value;
             SaveManager.Save(SaveManager.Load());
         }
 
-        public void SetEffectsVolume(float value)
+        private void SetEffectsVolume(float value)
         {
             audioMixer.SetFloat(EffectsVolumeParam, value);
             SaveManager.Load().EffectsVolume = value;

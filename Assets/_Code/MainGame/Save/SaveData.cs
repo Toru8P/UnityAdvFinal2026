@@ -12,6 +12,8 @@ namespace _Code.MainGame.Save
         public float MasterVolume = 0f;
         public float MusicVolume = 0f;
         public float EffectsVolume = 0f;
+        
+        public bool MinimapOpened = true;
 
 
         // Highest level the player has completed (1 = Level 1, 2 = Level 2, 3 = Level 3). 0 = none.

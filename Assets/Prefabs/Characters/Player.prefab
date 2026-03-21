@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1152304899965492072}
   - component: {fileID: 5206274279222389767}
   m_Layer: 7
-  m_Name: Footsteps Audio Source
+  m_Name: Player Effects Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -185,7 +185,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   channel: {fileID: 0}
   moveSpeed: 5
-  playerInput: {fileID: 0}
+  dashSpeed: 15
+  dashTime: 0.25
+  dashCooldown: 3
+  onStartDash:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: _Code.UI.DashCooldownUI, UIDef
+        m_MethodName: StartCooldown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: _Code.MainGame.Enemy.EnemySpawner, MainGameDef
+        m_MethodName: OnPlayerDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   skin: 0.05
   obstacleMask:
     serializedVersion: 2
@@ -194,6 +238,8 @@ MonoBehaviour:
   footstepSource: {fileID: 5206274279222389767}
   footstepClips:
   - {fileID: 8300000, guid: 7a16c0a1e2c56eb4e8e10729597468dd, type: 3}
+  slideSource: {fileID: 5206274279222389767}
+  slideClip: {fileID: 8300000, guid: d391aa4ab823422498382760f9eea3e6, type: 3}
 --- !u!114 &8542478849262022903
 MonoBehaviour:
   m_ObjectHideFlags: 0

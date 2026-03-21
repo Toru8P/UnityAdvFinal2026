@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace _Code.UI
 {
+    [RequireComponent(typeof(Animator))]
     public class DashCooldownUI : MonoBehaviour
     {
+        private static readonly int DashIsReady = Animator.StringToHash("DashIsReady");
+
         [Header("References")]
         // Filled image that shows the cooldown progress.
         [SerializeField] private Image fillImage;
@@ -13,10 +17,25 @@ namespace _Code.UI
         private float _cooldownDuration;
         private Coroutine _cooldownRoutine;
 
+        private float _currentAmount;
+        
+        private Animator _animator;
+
         private void Awake()
         {
             // Start full so the bar shows dash is ready.
             SetFillAmount(1f);
+            _animator =  GetComponent<Animator>();
+        }
+
+        private void Update()
+        {
+            HandleAnimator();
+        }
+
+        private void HandleAnimator()
+        {
+            _animator.SetBool(DashIsReady, _currentAmount == 1f);
         }
 
         // Called by the player's OnStartDash UnityEvent.
@@ -63,7 +82,9 @@ namespace _Code.UI
         {
             if (!fillImage) return;
 
-            fillImage.fillAmount = Mathf.Clamp01(value);
+            float amount = Mathf.Clamp01(value);
+            fillImage.fillAmount = amount;
+            _currentAmount = amount;
         }
     }
 }
