@@ -1,52 +1,32 @@
 using System;
 using System.Collections.Generic;
+using _Code.MainGame.Level;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.Tilemaps;
-using Random = UnityEngine.Random;
 
 namespace _Code.MainGame.Buff
 {
     public class BuffSpawner : MonoBehaviour
     {
         [FormerlySerializedAs("_buffSetups")]
-        [Tooltip("Setup + chance + optional prefab override (e.g. ImmunityBuff with goldenfish for Immunity).")]
+        [Tooltip("Buff setup, spawn weight, and prefab to spawn for that buff.")]
         [SerializeField] private List<BuffChance> buffSetups;
 
         [Header("Spawn Settings")]
         [SerializeField] private float spawnInterval = 5f;
         [SerializeField] private int maxBuffs = 5;
 
-        [SerializeField] private Tilemap spawnZone;
-        [SerializeField] private Tilemap obstacleZone;
-        private List<Vector3Int> _availableCells;
+        [Header("References")]
+        // LevelSpawner now owns the tile lookup and free spot reservation logic.
+        [SerializeField] private LevelSpawner levelSpawner;
 
         private int _spawnCounter;
         private bool _continueSpawning = true;
 
         private void Start()
         {
-            _availableCells = new List<Vector3Int>();
-            BoundsInt bounds = spawnZone.cellBounds;
-
-            foreach (Vector3Int cell in bounds.allPositionsWithin)
-            {
-                if (spawnZone.HasTile(cell))
-                {
-                    _availableCells.Add(cell);
-                }
-            }
-            
-                        
-            foreach (Vector3Int cell in obstacleZone.cellBounds.allPositionsWithin)
-            {
-                if (obstacleZone.HasTile(cell) && _availableCells.Contains(cell))
-                {
-                    _availableCells.Remove(cell);
-                }
-            }
-            
-            InvokeRepeating(nameof(SpawnBuff), spawnInterval, spawnInterval);
+            if (spawnInterval > 0f)
+                InvokeRepeating(nameof(SpawnBuff), spawnInterval, spawnInterval);
         }
 
         public void StopSpawning()
@@ -57,55 +37,64 @@ namespace _Code.MainGame.Buff
 
         private void SpawnBuff()
         {
-            if (_spawnCounter >= maxBuffs || !_continueSpawning) return;
-            if (_availableCells == null || _availableCells.Count == 0) return;
+            if (!_continueSpawning) return;
+            if (_spawnCounter >= maxBuffs) return;
+            if (!levelSpawner) return;
             if (buffSetups == null || buffSetups.Count == 0) return;
 
-            float totalChance = 0f;
-            foreach (BuffChance buffChance in buffSetups)
+            var selectedBuff = GetRandomBuffSetup();
+            if (selectedBuff == null) return;
+            if (!selectedBuff.Setup || !selectedBuff.PrefabOverride) return;
+
+            if (!levelSpawner.TryReserveRandomSpawnPosition(out var spawnPosition, out _))
+                return;
+
+            var createdBuff = Instantiate(selectedBuff.PrefabOverride, spawnPosition, Quaternion.identity);
+            var buff = createdBuff.GetComponent<Buff>();
+            if (buff != null)
+                buff.Initialize(selectedBuff.Setup);
+
+            _spawnCounter++;
+        }
+
+        // Same weighted roll as before, just moved into its own helper.
+        private BuffChance GetRandomBuffSetup()
+        {
+            var totalChance = 0f;
+
+            foreach (var buffChance in buffSetups)
             {
                 if (buffChance.Setup && buffChance.Chance > 0f)
                     totalChance += buffChance.Chance;
             }
 
-            if (totalChance <= 0f) return;
+            if (totalChance <= 0f)
+                return null;
 
-            float roll = Random.Range(0f, totalChance);
+            var roll = UnityEngine.Random.Range(0f, totalChance);
 
-            foreach (BuffChance buff in buffSetups)
+            foreach (var buffChance in buffSetups)
             {
-                if (!buff.Setup || buff.Chance <= 0f) continue;
+                if (!buffChance.Setup || buffChance.Chance <= 0f) continue;
 
-                roll -= buff.Chance;
+                roll -= buffChance.Chance;
                 if (roll <= 0f)
-                {
-                    if (SpawnAtTile(buff.PrefabOverride, buff.Setup)) _spawnCounter++;
-                    break;
-                }
+                    return buffChance;
             }
-        }
-        
-        private bool SpawnAtTile(GameObject prefabToSpawn, BuffSetup selectedSetup)
-        {
-            if (!prefabToSpawn) return false;
-            if (!selectedSetup) return false;
-            
-            Vector3Int randomCell = _availableCells[Random.Range(0, _availableCells.Count)];
-            Vector3 spawnPosition = spawnZone.GetCellCenterWorld(randomCell);
 
-            GameObject createdBuff = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
-            createdBuff.GetComponent<Buff>().Initialize(selectedSetup);
-            return true;
+            return null;
         }
-        
+
         [Serializable]
         private class BuffChance
         {
-            [Tooltip("Buff data (type, duration, value).")]
+            [Tooltip("Buff data like type, duration, and value.")]
             public BuffSetup Setup;
-            [Tooltip("Spawn weight (higher = more likely).")]
+
+            [Tooltip("Higher value means this buff is picked more often.")]
             public float Chance;
-            [Tooltip("Optional: prefab for this buff (e.g. ImmunityBuff with goldenfish). If empty, uses default Buff Prefab.")]
+
+            [Tooltip("Prefab to spawn for this buff entry.")]
             public GameObject PrefabOverride;
 
             public BuffChance(BuffSetup setup, float chance)
@@ -114,6 +103,5 @@ namespace _Code.MainGame.Buff
                 Chance = chance;
             }
         }
-        
     }
 }

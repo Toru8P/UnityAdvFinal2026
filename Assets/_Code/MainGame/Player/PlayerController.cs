@@ -15,16 +15,19 @@ namespace _Code.MainGame.Player
         [Header("Movement Settings")]
         [SerializeField] private float moveSpeed = 4f;
 
+        [Header("Vines Settings")]
+        // Vines slow the final walk speed without changing the base speed value.
+        [SerializeField] private float vinesSlowMultiplier = 0.5f;
+
         [Header("Dash Settings")]
         [SerializeField] private float dashSpeed = 15f;
         [SerializeField] private float dashTime = 0.25f;
         [SerializeField] private float dashCooldown = 3f;
         [SerializeField] private UnityEvent<float> onStartDash;
 
-        
         [Header("Death settings")]
         [SerializeField] private UnityEvent onDeath;
-        
+
         [Header("Hit Detection Settings")]
         [SerializeField] private float skin = 0.02f;
         [SerializeField] private LayerMask obstacleMask;
@@ -34,7 +37,7 @@ namespace _Code.MainGame.Player
         private float _stepTimer = 0f;
         public AudioSource footstepSource;
         public AudioClip[] footstepClips;
-        
+
         public AudioSource slideSource;
         public AudioClip slideClip;
 
@@ -49,7 +52,8 @@ namespace _Code.MainGame.Player
         private Vector2 _dashDirection;
         private readonly RaycastHit2D[] _hits = new RaycastHit2D[8];
 
-        private InputAction.CallbackContext _context;
+        // A counter is safer than a bool in case multiple vine colliders overlap.
+        private int _vinesContacts;
 
         [CanBeNull] private BuffAttachment _activeBuff;
 
@@ -130,12 +134,28 @@ namespace _Code.MainGame.Player
 
         private void UpdateMovement()
         {
-            float speed = moveSpeed;
-            if (_activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost)
-                speed += _activeBuff.Value;
+            // Walk speed is rebuilt every frame from the current states.
+            // That keeps vines, buffs, and exiting triggers from fighting each other.
+            float speed = GetCurrentMoveSpeed();
 
             Vector2 delta = _moveInput * (speed * Time.deltaTime);
             MoveWithCollision(delta);
+        }
+
+        private float GetCurrentMoveSpeed()
+        {
+            float speed = moveSpeed;
+
+            // Speed buffs add on top of the base movement speed.
+            if (_activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost)
+                speed += _activeBuff.Value;
+
+            // Vines slow the final walk speed, including buffs.
+            // Dash uses its own speed, so this does not affect dash movement.
+            if (_vinesContacts > 0)
+                speed *= vinesSlowMultiplier;
+
+            return speed;
         }
 
         private void UpdateDash()
@@ -172,7 +192,6 @@ namespace _Code.MainGame.Player
             }
         }
 
-
         private void HandleSlideSound()
         {
             if (_activeBuff != null && _activeBuff.Type == BuffType.SpeedBoost)
@@ -185,12 +204,20 @@ namespace _Code.MainGame.Player
             }
         }
 
-
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!_isAlive) return;
+
+            // Vines only change the slow state.
+            // Speed is recalculated elsewhere, so entering vines cannot permanently change movement.
+            if (other.CompareTag("Vines"))
+            {
+                _vinesContacts++;
+                return;
+            }
+
             if (!other.CompareTag("Enemy")) return;
-            
+
             if (_activeBuff != null && _activeBuff.Type == BuffType.Immunity)
             {
                 _activeBuff = null;
@@ -208,9 +235,16 @@ namespace _Code.MainGame.Player
             _dashDirection = Vector2.zero;
             _isDashing = false;
 
-
             onDeath.Invoke();
             _isAlive = false;
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (!other.CompareTag("Vines")) return;
+
+            // Count back down so overlapping vine areas still work correctly.
+            _vinesContacts = Mathf.Max(0, _vinesContacts - 1);
         }
 
         private void MoveWithCollision(Vector2 delta)
@@ -342,17 +376,16 @@ namespace _Code.MainGame.Player
             slideSource.Play();
             _isSlideSoundPlaying = true;
         }
-        
-        
+
         private void StopSlideSound()
         {
             if (!_isSlideSoundPlaying)
                 return;
+
             slideSource.Stop();
             slideSource.loop = false;
             _isSlideSoundPlaying = false;
         }
-
 
         public bool AttachBuff(BuffAttachment attachment)
         {

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Buff
+  - Vines
   layers:
   - Default
   - TransparentFX
@@ -58,11 +59,11 @@ TagManager:
   - name: Obstacles
     uniqueID: 455449517
     locked: 0
-  - name: Character
-    uniqueID: 3391701547
-    locked: 0
   - name: Items
     uniqueID: 3278784255
+    locked: 0
+  - name: Character
+    uniqueID: 3391701547
     locked: 0
   m_RenderingLayers:
   - Default
