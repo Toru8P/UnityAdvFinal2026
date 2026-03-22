@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Code.MainGame.Enemy.Difficulty;
@@ -14,7 +13,7 @@ namespace _Code.MainGame.Enemy
     {
         [Header("Player Target")]
         [SerializeField] private Transform target;
-        
+
         [Header("Enemy Prefabs")]
         [SerializeField] private GameObject enemyLowPrefab;
         [SerializeField] private GameObject enemyMidPrefab;
@@ -22,37 +21,116 @@ namespace _Code.MainGame.Enemy
 
         [Header("Spawn Settings")]
         [SerializeField] private float spawnInterval = 2f;
-        [SerializeField] private int maxEnemies = 10; 
+        [SerializeField] private int maxEnemies = 10;
         [SerializeField] private Tilemap spawnZone;
 
         [Header("Enemy Light Settings")]
         [SerializeField] private bool enemiesHaveLight = false;
-        
+
         [Header("Difficulty Settings")]
         [SerializeField] private float currentSpeed;
-        
+
         [Header("Visual Enemies Counter")]
         [SerializeField] private TextMeshProUGUI enemiesCounterText;
-        
+
         private int _spawnCounter;
         private bool _continueSpawning = true;
-    
-        private float timer;
-    
-        private List<Vector3Int> availableCells;
-    
-        private IEnumerator SpawnEnemies()
+
+        private List<Vector3Int> _availableCells;
+        private Coroutine _spawnRoutine;
+
+        // Time left until the next spawn.
+        // Starts at spawnInterval so the first enemy appears after the interval.
+        private float _timeUntilNextSpawn;
+
+        private void Awake()
         {
-            while (_spawnCounter < maxEnemies && _continueSpawning)
+            var difficultySystem = GetComponent<DifficultySystem>();
+            difficultySystem.SubscribeToDifficultyUpdate(OnDifficultyChanged);
+
+            _availableCells = new List<Vector3Int>();
+            var bounds = spawnZone.cellBounds;
+
+            foreach (var cell in bounds.allPositionsWithin)
             {
-                SpawnEnemy();
-                yield return new WaitForSeconds(spawnInterval);
+                if (spawnZone.HasTile(cell))
+                {
+                    _availableCells.Add(cell);
+                }
+            }
+
+            _timeUntilNextSpawn = spawnInterval;
+        }
+
+        private void Start()
+        {
+            StartSpawnRoutineIfNeeded();
+        }
+
+        private void OnEnable()
+        {
+            StartSpawnRoutineIfNeeded();
+        }
+
+        private void OnDisable()
+        {
+            if (_spawnRoutine != null)
+            {
+                StopCoroutine(_spawnRoutine);
+                _spawnRoutine = null;
             }
         }
 
         private void LateUpdate()
         {
-             UpdateEnemiesCounterText();
+            UpdateEnemiesCounterText();
+        }
+
+        private void StartSpawnRoutineIfNeeded()
+        {
+            if (!isActiveAndEnabled)
+            {
+                return;
+            }
+
+            if (!_continueSpawning)
+            {
+                return;
+            }
+
+            if (_spawnCounter >= maxEnemies)
+            {
+                return;
+            }
+
+            if (_spawnRoutine != null)
+            {
+                return;
+            }
+
+            _spawnRoutine = StartCoroutine(SpawnEnemies());
+        }
+
+        private IEnumerator SpawnEnemies()
+        {
+            while (_spawnCounter < maxEnemies && _continueSpawning)
+            {
+                while (_timeUntilNextSpawn > 0f)
+                {
+                    _timeUntilNextSpawn -= Time.deltaTime;
+                    yield return null;
+                }
+
+                if (_spawnCounter >= maxEnemies || !_continueSpawning)
+                {
+                    break;
+                }
+
+                SpawnEnemy();
+                _timeUntilNextSpawn = spawnInterval;
+            }
+
+            _spawnRoutine = null;
         }
 
         private void UpdateEnemiesCounterText()
@@ -61,71 +139,68 @@ namespace _Code.MainGame.Enemy
             {
                 return;
             }
+
             enemiesCounterText.text = $"Enemies: {_spawnCounter}";
         }
-        
+
         public void StopSpawning()
         {
             _continueSpawning = false;
+
+            if (_spawnRoutine != null)
+            {
+                StopCoroutine(_spawnRoutine);
+                _spawnRoutine = null;
+            }
         }
 
         public void OnPlayerDeath()
         {
             StopSpawning();
         }
-    
+
         private void SpawnEnemy()
         {
-            if (_continueSpawning && enemyLowPrefab && enemyMidPrefab && enemyHiPrefab && target)
+            if (!_continueSpawning || !enemyLowPrefab || !enemyMidPrefab || !enemyHiPrefab || !target)
             {
-                Vector3Int randomCell = availableCells[Random.Range(0, availableCells.Count-1)];
-                
-                GameObject enemyPrefab = null;
-                switch (currentSpeed)
-                {
-                    case 1: case 2: case 3:
-                        enemyPrefab = enemyLowPrefab;
-                        break;
-                    case 4: 
-                        enemyPrefab = enemyMidPrefab;
-                        break;
-                    default: 
-                        enemyPrefab = enemyHiPrefab;
-                        break;
-                }
-                GameObject enemy = Instantiate(enemyPrefab, randomCell, Quaternion.identity);
-
-                EnemyController controller = enemy.GetComponent<EnemyController>();
-                if (controller)
-                {
-                    controller.SetTarget(target);
-                    controller.SetSpeed(currentSpeed);
-                    controller.TurnLight(enemiesHaveLight);
-                }
-
-                _spawnCounter++;
+                return;
             }
-        }
-    
-        private void Awake()
-        {
-            DifficultySystem difficultySystem = GetComponent<DifficultySystem>();
-            difficultySystem.SubscribeToDifficultyUpdate(OnDifficultyChanged);
-            
-            availableCells = new List<Vector3Int>();
-            BoundsInt bounds = spawnZone.cellBounds;
 
-            foreach (Vector3Int cell in bounds.allPositionsWithin)
+            if (_availableCells == null || _availableCells.Count == 0)
             {
-                if (spawnZone.HasTile(cell))
-                {
-                    availableCells.Add(cell);
-                }
+                return;
             }
-        
-            StartCoroutine(SpawnEnemies());
+
+            var randomCell = _availableCells[Random.Range(0, _availableCells.Count)];
+
+            GameObject enemyPrefab;
+            switch (currentSpeed)
+            {
+                case 1:
+                case 2:
+                case 3:
+                    enemyPrefab = enemyLowPrefab;
+                    break;
+                case 4:
+                    enemyPrefab = enemyMidPrefab;
+                    break;
+                default:
+                    enemyPrefab = enemyHiPrefab;
+                    break;
+            }
+
+            var enemy = Instantiate(enemyPrefab, randomCell, Quaternion.identity);
+
+            var controller = enemy.GetComponent<EnemyController>();
+            if (controller)
+            {
+                controller.SetTarget(target);
+                controller.SetSpeed(currentSpeed);
+                controller.TurnLight(enemiesHaveLight);
+            }
+            _spawnCounter++;
         }
-        
+
         private void OnDifficultyChanged(DifficultyPreset preset)
         {
             currentSpeed = preset.mobSpeed;
