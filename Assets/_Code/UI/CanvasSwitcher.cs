@@ -1,6 +1,7 @@
 using _Code.UI.MenuNavigation;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace _Code.UI
@@ -8,35 +9,75 @@ namespace _Code.UI
     public class CanvasSwitcher : MonoBehaviour
     {
         [SerializeField] private bool turnOnTutorial = false;
-        
-        [Header("General Menus")] 
+
+        [Header("General Menus")]
         [SerializeField] private GameObject startCanvas;
         [SerializeField] private GameObject tutorialCanvas;
         [SerializeField] private GameObject gameCanvas;
         [SerializeField] private GameObject pauseCanvas;
-        
         [SerializeField] private GameObject lostCanvas;
         [SerializeField] private GameObject winCanvas;
 
+        [Header("Gameplay")]
+        [SerializeField] private GameObject gameplayRoot;
+
         private GameObject _currentlyActive;
-        
+
+        private bool IsPaused => pauseCanvas && pauseCanvas.activeSelf;
+        private bool IsGameRunning => gameplayRoot && gameplayRoot.activeSelf && gameCanvas && gameCanvas.activeSelf && !IsPaused;
+
         public void Awake()
         {
             Reset();
+            Time.timeScale = 1f;
+
             startCanvas?.SetActive(true);
+
             if (turnOnTutorial)
             {
+                Time.timeScale = 0f;
+
                 tutorialCanvas?.SetActive(true);
                 gameCanvas?.SetActive(true);
+                gameplayRoot?.SetActive(false);
+
+                _currentlyActive = tutorialCanvas ? tutorialCanvas : gameCanvas;
+                SelectFirstInActiveCanvas();
+                return;
             }
+
             _currentlyActive = startCanvas;
             SelectFirstInActiveCanvas();
         }
-        
+
+        private void Update()
+        {
+            if (Keyboard.current == null)
+            {
+                return;
+            }
+
+            if (!Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                return;
+            }
+
+            if (IsPaused)
+            {
+                OnResume();
+            }
+            else if (IsGameRunning)
+            {
+                OnPauseMenu();
+            }
+        }
+
         public void OnGameLost()
         {
             Reset();
-            lostCanvas.SetActive(true);
+            Time.timeScale = 1f;
+
+            lostCanvas?.SetActive(true);
             _currentlyActive = lostCanvas;
             SelectFirstInActiveCanvas();
         }
@@ -44,7 +85,9 @@ namespace _Code.UI
         public void OnGameWon()
         {
             Reset();
-            winCanvas.SetActive(true);
+            Time.timeScale = 1f;
+
+            winCanvas?.SetActive(true);
             _currentlyActive = winCanvas;
             SelectFirstInActiveCanvas();
         }
@@ -52,24 +95,45 @@ namespace _Code.UI
         public void OnGameStart()
         {
             Reset();
-            gameCanvas.SetActive(true);
+            Time.timeScale = 1f;
+
+            gameCanvas?.SetActive(true);
+            gameplayRoot?.SetActive(true);
             _currentlyActive = gameCanvas;
 
             SelectFirstInActiveCanvas();
         }
-        
+
         public void OnPauseMenu()
         {
-            Reset();
+            Time.timeScale = 0f;
+
+            startCanvas?.SetActive(false);
+            if (tutorialCanvas) tutorialCanvas.SetActive(false);
+            lostCanvas?.SetActive(false);
+            winCanvas?.SetActive(false);
+
+            gameCanvas?.SetActive(true);
             pauseCanvas?.SetActive(true);
+            gameplayRoot?.SetActive(false);
+
             _currentlyActive = pauseCanvas;
             SelectFirstInActiveCanvas();
         }
 
         public void OnResume()
         {
-            Reset();
+            Time.timeScale = 1f;
+
+            startCanvas?.SetActive(false);
+            if (tutorialCanvas) tutorialCanvas.SetActive(false);
+            lostCanvas?.SetActive(false);
+            winCanvas?.SetActive(false);
+
+            pauseCanvas?.SetActive(false);
             gameCanvas?.SetActive(true);
+            gameplayRoot?.SetActive(true);
+
             _currentlyActive = gameCanvas;
             SelectFirstInActiveCanvas();
         }
@@ -80,9 +144,11 @@ namespace _Code.UI
             if (tutorialCanvas) tutorialCanvas.SetActive(false);
             gameCanvas?.SetActive(false);
             pauseCanvas?.SetActive(false);
-            
             lostCanvas?.SetActive(false);
             winCanvas?.SetActive(false);
+
+            gameplayRoot?.SetActive(false);
+
             _currentlyActive = null;
         }
 
@@ -107,6 +173,11 @@ namespace _Code.UI
                     break;
                 }
             }
+        }
+
+        private void OnDestroy()
+        {
+            Time.timeScale = 1f;
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Code.MainGame.Enemy.Difficulty;
@@ -15,7 +14,7 @@ namespace _Code.MainGame.Enemy
     {
         [Header("Player Target")]
         [SerializeField] private Transform target;
-        
+
         [Header("Enemy Prefabs")]
         [SerializeField] private GameObject enemyLowPrefab;
         [SerializeField] private GameObject enemyMidPrefab;
@@ -31,30 +30,99 @@ namespace _Code.MainGame.Enemy
 
         [Header("Enemy Light Settings")]
         [SerializeField] private bool enemiesHaveLight = false;
-        
+
         [Header("Difficulty Settings")]
         [SerializeField] private float currentSpeed;
-        
+
         [Header("Visual Enemies Counter")]
         [SerializeField] private TextMeshProUGUI enemiesCounterText;
-        
+
         private int _spawnCounter;
         private bool _continueSpawning = true;
-    
-        private float _timer;
-        
-        private IEnumerator SpawnEnemies()
+
+        private Coroutine _spawnRoutine;
+
+        // Time left until the next spawn.
+        // Starts at spawnInterval so the first enemy appears after the interval.
+        private float _timeUntilNextSpawn;
+
+        private void Awake()
         {
-            while (_spawnCounter < maxEnemies && _continueSpawning)
+            DifficultySystem difficultySystem = GetComponent<DifficultySystem>();
+            difficultySystem.SubscribeToDifficultyUpdate(OnDifficultyChanged);
+            
+            _timeUntilNextSpawn = spawnInterval;
+        }
+
+        private void Start()
+        {
+            StartSpawnRoutineIfNeeded();
+        }
+
+        private void OnEnable()
+        {
+            StartSpawnRoutineIfNeeded();
+        }
+
+        private void OnDisable()
+        {
+            if (_spawnRoutine != null)
             {
-                SpawnEnemy();
-                yield return new WaitForSeconds(spawnInterval);
+                StopCoroutine(_spawnRoutine);
+                _spawnRoutine = null;
             }
         }
 
         private void LateUpdate()
         {
-             UpdateEnemiesCounterText();
+            UpdateEnemiesCounterText();
+        }
+
+        private void StartSpawnRoutineIfNeeded()
+        {
+            if (!isActiveAndEnabled)
+            {
+                return;
+            }
+
+            if (!_continueSpawning)
+            {
+                return;
+            }
+
+            if (_spawnCounter >= maxEnemies)
+            {
+                return;
+            }
+
+            if (_spawnRoutine != null)
+            {
+                return;
+            }
+
+            _spawnRoutine = StartCoroutine(SpawnEnemies());
+        }
+
+        private IEnumerator SpawnEnemies()
+        {
+            while (_spawnCounter < maxEnemies && _continueSpawning)
+            {
+                while (_timeUntilNextSpawn > 0f)
+                {
+                    _timeUntilNextSpawn -= Time.deltaTime;
+                    yield return null;
+                }
+
+                if (_spawnCounter >= maxEnemies || !_continueSpawning)
+                {
+                    break;
+                }
+
+                SpawnEnemy();
+                _timeUntilNextSpawn = spawnInterval;
+            }
+
+            _spawnRoutine = null;
         }
 
         private void UpdateEnemiesCounterText()
@@ -63,19 +131,26 @@ namespace _Code.MainGame.Enemy
             {
                 return;
             }
+
             enemiesCounterText.text = $"Enemies: {_spawnCounter}";
         }
-        
+
         public void StopSpawning()
         {
             _continueSpawning = false;
+
+            if (_spawnRoutine != null)
+            {
+                StopCoroutine(_spawnRoutine);
+                _spawnRoutine = null;
+            }
         }
 
         public void OnPlayerDeath()
         {
             StopSpawning();
         }
-    
+
         private void SpawnEnemy()
         {
             if (_continueSpawning && enemyLowPrefab && enemyMidPrefab && enemyHiPrefab && target)
@@ -109,14 +184,7 @@ namespace _Code.MainGame.Enemy
                 _spawnCounter++;
             }
         }
-    
-        private void Awake()
-        {
-            DifficultySystem difficultySystem = GetComponent<DifficultySystem>();
-            difficultySystem.SubscribeToDifficultyUpdate(OnDifficultyChanged);
-            StartCoroutine(SpawnEnemies());
-        }
-        
+
         private void OnDifficultyChanged(DifficultyPreset preset)
         {
             currentSpeed = preset.mobSpeed;

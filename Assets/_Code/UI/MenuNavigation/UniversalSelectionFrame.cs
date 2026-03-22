@@ -42,7 +42,7 @@ namespace _Code.UI.MenuNavigation
         {
             if (_built) return;
 
-            var go = new GameObject("SelectionFrame");
+            GameObject go = new GameObject("SelectionFrame");
             go.transform.SetParent(transform, false);
             _frameRoot = go.AddComponent<RectTransform>();
             _frameRoot.anchorMin = Vector2.zero;
@@ -50,7 +50,7 @@ namespace _Code.UI.MenuNavigation
             _frameRoot.offsetMin = Vector2.zero;
             _frameRoot.offsetMax = Vector2.zero;
 
-            var sprite = CreatePixelSprite();
+            Sprite sprite = CreatePixelSprite();
             float t = borderThickness;
 
             CreateEdge("Left",   new Vector2(0, 0), new Vector2(0, 1), new Vector2(-t, 0), Vector2.zero, sprite);
@@ -70,16 +70,16 @@ namespace _Code.UI.MenuNavigation
             Vector2 offsetMax,
             Sprite sprite)
         {
-            var go = new GameObject(name);
+            GameObject go = new GameObject(name);
             go.transform.SetParent(_frameRoot, false);
 
-            var rt = go.AddComponent<RectTransform>();
+            RectTransform rt = go.AddComponent<RectTransform>();
             rt.anchorMin = anchorMin;
             rt.anchorMax = anchorMax;
             rt.offsetMin = offsetMin;
             rt.offsetMax = offsetMax;
 
-            var img = go.AddComponent<Image>();
+            Image img = go.AddComponent<Image>();
             img.sprite = sprite;
             img.color = borderColor;
             img.raycastTarget = false;
@@ -87,7 +87,7 @@ namespace _Code.UI.MenuNavigation
 
         private static Sprite CreatePixelSprite()
         {
-            var tex = new Texture2D(1, 1);
+            Texture2D tex = new Texture2D(1, 1);
             tex.SetPixel(0, 0, Color.white);
             tex.Apply();
             return Sprite.Create(tex, new Rect(0, 0, 1, 1), new Vector2(0.5f, 0.5f));

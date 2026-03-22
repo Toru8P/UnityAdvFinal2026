@@ -32,7 +32,7 @@ namespace _Code.UI
 
         public void ResyncValues()
         {
-            var data = SaveManager.Load();
+            SaveData data = SaveManager.Load();
 
             // Load mixer values
             audioMixer.SetFloat(MasterVolumeParam, data.MasterVolume);

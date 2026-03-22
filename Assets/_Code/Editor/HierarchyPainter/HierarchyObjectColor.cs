@@ -29,10 +29,10 @@ namespace _Code.Editor.HierarchyPainter
         {
             if (!_cacheDirty && _paintByName != null) return;
 
-            var settings = HierarchyPainterSettings.instance;
+            HierarchyPainterSettings settings = HierarchyPainterSettings.instance;
 
             _paintByName = new Dictionary<string, HierarchyPaint>(settings.paints.Count);
-            foreach (var p in settings.paints)
+            foreach (HierarchyPaint p in settings.paints)
             {
                 if (!string.IsNullOrEmpty(p.name))
                 {
@@ -55,30 +55,30 @@ namespace _Code.Editor.HierarchyPainter
 
             EnsureCache();
 
-            var go = EditorUtility.EntityIdToObject(instanceID) as GameObject;
+            GameObject go = EditorUtility.EntityIdToObject(instanceID) as GameObject;
             if (go == null) return;
 
-            if (!_paintByName.TryGetValue(go.name, out var paint))
+            if (!_paintByName.TryGetValue(go.name, out HierarchyPaint paint))
                 return;
 
             if (paint.backgroundColor.a <= 0f && paint.textColor.a <= 0f)
                 return;
 
-            var settings = HierarchyPainterSettings.instance;
+            HierarchyPainterSettings settings = HierarchyPainterSettings.instance;
 
             if (paint.backgroundColor.a > 0f)
             {
-                var bgRect = selectionRect;
+                Rect bgRect = selectionRect;
                 bgRect.width += 50f; 
                 EditorGUI.DrawRect(bgRect, paint.backgroundColor);
             }
 
-            var labelRect = selectionRect;
+            Rect labelRect = selectionRect;
             labelRect.xMin += 16f;
             labelRect.y += settings.offset.y;
             labelRect.x += settings.offset.x;
 
-            var tc = paint.textColor;
+            Color tc = paint.textColor;
             tc.a = 1f;
 
             _labelStyle.normal.textColor = tc;

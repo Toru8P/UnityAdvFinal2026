@@ -18,7 +18,7 @@ namespace _Code.Editor.Map
         {
             DrawDefaultInspector();
 
-            var mapPainter = (MapPainter)target;
+            MapPainter mapPainter = (MapPainter)target;
 
             EditorGUILayout.Space();
 
@@ -114,7 +114,7 @@ namespace _Code.Editor.Map
             int xMin = 0, yMin = 0;
             int xMax = 0, yMax = 0;
 
-            foreach (var tm in tilemaps)
+            foreach (Tilemap tm in tilemaps)
             {
                 if (!tm) 
                     continue;

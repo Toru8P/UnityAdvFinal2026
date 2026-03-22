@@ -27,12 +27,12 @@ namespace _Code.UI.MenuNavigation
             if (_index < 0 || _index >= orderedButtons.Count)
                 return;
 
-            var sel = orderedButtons[_index];
+            Selectable sel = orderedButtons[_index];
             if (!IsSelectableValid(sel))
                 return;
 
             // Support Buttons
-            var button = sel.GetComponent<Button>();
+            Button button = sel.GetComponent<Button>();
             if (button)
             {
                 button.onClick.Invoke();
@@ -56,12 +56,12 @@ namespace _Code.UI.MenuNavigation
         {
             _frames.Clear();
 
-            foreach (var canvas in canvases)
+            foreach (Canvas canvas in canvases)
             {
-                var go = new GameObject("UniversalSelectionFrame");
+                GameObject go = new GameObject("UniversalSelectionFrame");
                 go.transform.SetParent(canvas.transform, false);
 
-                var frame = go.AddComponent<UniversalSelectionFrame>();
+                UniversalSelectionFrame frame = go.AddComponent<UniversalSelectionFrame>();
                 frame.Hide();
 
                 _frames.Add(canvas, frame);
@@ -79,7 +79,7 @@ namespace _Code.UI.MenuNavigation
             {
                 i = (i + direction + orderedButtons.Count) % orderedButtons.Count;
 
-                var sel = orderedButtons[i];
+                Selectable sel = orderedButtons[i];
                 if (IsSelectableValid(sel))
                 {
                     SelectIndex(i);
@@ -120,17 +120,17 @@ namespace _Code.UI.MenuNavigation
         private void SelectIndex(int i)
         {
             _index = i;
-            var sel = orderedButtons[i];
+            Selectable sel = orderedButtons[i];
 
             EventSystem.current.SetSelectedGameObject(sel.gameObject);
 
-            var rt = sel.transform as RectTransform;
+            RectTransform rt = sel.transform as RectTransform;
             if (!rt) return;
 
-            var canvas = sel.GetComponentInParent<Canvas>();
+            Canvas canvas = sel.GetComponentInParent<Canvas>();
             if (!canvas) return;
 
-            foreach (var kv in _frames)
+            foreach (KeyValuePair<Canvas, UniversalSelectionFrame> kv in _frames)
             {
                 if (kv.Key == canvas)
                     kv.Value.Show(rt);

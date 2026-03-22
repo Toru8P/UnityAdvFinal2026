@@ -13,8 +13,8 @@ namespace _Code.Editor.HierarchyPainter
             {
                 guiHandler = _ =>
                 {
-                    var settings = HierarchyPainterSettings.instance;
-                    var so = new SerializedObject(settings);
+                    HierarchyPainterSettings settings = HierarchyPainterSettings.instance;
+                    SerializedObject so = new SerializedObject(settings);
 
                     so.Update();
 
