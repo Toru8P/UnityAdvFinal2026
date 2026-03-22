@@ -24,10 +24,10 @@ namespace _Code.UI
             ResyncValues();
             
             // AUTOMATIC EVENT SUBSCRIPTIONS
-            masterSlider.onValueChanged.AddListener(SetMasterVolume);
-            musicSlider.onValueChanged.AddListener(SetMusicVolume);
-            effectsSlider.onValueChanged.AddListener(SetEffectsVolume);
-            minimapToggle.onValueChanged.AddListener(ToggleMinimap);
+            if (masterSlider) masterSlider.onValueChanged.AddListener(SetMasterVolume);
+            if (musicSlider) musicSlider.onValueChanged.AddListener(SetMusicVolume);
+            if (effectsSlider) effectsSlider.onValueChanged.AddListener(SetEffectsVolume);
+            if (minimapToggle) minimapToggle.onValueChanged.AddListener(ToggleMinimap);
         }
 
         public void ResyncValues()
@@ -38,13 +38,13 @@ namespace _Code.UI
             audioMixer.SetFloat(MasterVolumeParam, data.MasterVolume);
             audioMixer.SetFloat(MusicVolumeParam, data.MusicVolume);
             audioMixer.SetFloat(EffectsVolumeParam, data.EffectsVolume);
-            minimap.SetActive(data.MinimapOpened);
+            if (minimap) minimap.SetActive(data.MinimapOpened);
             
             // Set slider values
-            masterSlider.value = data.MasterVolume;
-            musicSlider.value = data.MusicVolume;
-            effectsSlider.value = data.EffectsVolume;
-            minimapToggle.isOn = data.MinimapOpened;
+            if (masterSlider) masterSlider.value = data.MasterVolume;
+            if (musicSlider) musicSlider.value = data.MusicVolume;
+            if (effectsSlider) effectsSlider.value = data.EffectsVolume;
+            if (minimapToggle) minimapToggle.isOn = data.MinimapOpened;
         }
 
 
