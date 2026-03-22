@@ -12,8 +12,10 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
-# /_Recovery/
-# /BuildWeb/
+/_Recovery/
+/BuildWeb/
+/BuildWeb.*
+/Build.*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
