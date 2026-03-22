@@ -15,6 +15,8 @@ namespace _Code.MainGame.Vines
 
         // This is the vine object to place in the level.
         [SerializeField] private GameObject vinePrefab;
+        
+        [SerializeField] private GameObject parentVines;
 
         private int _spawnCounter;
         private bool _continueSpawning = true;
@@ -43,7 +45,10 @@ namespace _Code.MainGame.Vines
             if (!levelSpawner.TryReserveRandomSpawnPosition(out var spawnPosition, out _))
                 return;
 
-            Instantiate(vinePrefab, spawnPosition, Quaternion.identity);
+            GameObject vines = Instantiate(vinePrefab, spawnPosition, Quaternion.identity);
+            
+            if (parentVines) vines.transform.SetParent(parentVines.transform);
+
             _spawnCounter++;
         }
     }

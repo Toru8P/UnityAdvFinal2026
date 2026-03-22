@@ -20,6 +20,8 @@ namespace _Code.MainGame.Buff
         // LevelSpawner now owns the tile lookup and free spot reservation logic.
         [SerializeField] private LevelSpawner levelSpawner;
 
+        [SerializeField] private GameObject buffsParent;
+        
         private int _spawnCounter;
         private bool _continueSpawning = true;
 
@@ -42,17 +44,18 @@ namespace _Code.MainGame.Buff
             if (!levelSpawner) return;
             if (buffSetups == null || buffSetups.Count == 0) return;
 
-            var selectedBuff = GetRandomBuffSetup();
+            BuffChance selectedBuff = GetRandomBuffSetup();
             if (selectedBuff == null) return;
             if (!selectedBuff.Setup || !selectedBuff.PrefabOverride) return;
 
             if (!levelSpawner.TryReserveRandomSpawnPosition(out var spawnPosition, out _))
                 return;
 
-            var createdBuff = Instantiate(selectedBuff.PrefabOverride, spawnPosition, Quaternion.identity);
-            var buff = createdBuff.GetComponent<Buff>();
-            if (buff != null)
-                buff.Initialize(selectedBuff.Setup);
+            GameObject createdBuff = Instantiate(selectedBuff.PrefabOverride, spawnPosition, Quaternion.identity);
+            if (buffsParent) createdBuff.transform.SetParent(buffsParent.transform);
+            
+            Buff buff = createdBuff.GetComponent<Buff>();
+            if (buff) buff.Initialize(selectedBuff.Setup);
 
             _spawnCounter++;
         }
@@ -60,9 +63,9 @@ namespace _Code.MainGame.Buff
         // Same weighted roll as before, just moved into its own helper.
         private BuffChance GetRandomBuffSetup()
         {
-            var totalChance = 0f;
+            float totalChance = 0f;
 
-            foreach (var buffChance in buffSetups)
+            foreach (BuffChance buffChance in buffSetups)
             {
                 if (buffChance.Setup && buffChance.Chance > 0f)
                     totalChance += buffChance.Chance;
@@ -71,9 +74,9 @@ namespace _Code.MainGame.Buff
             if (totalChance <= 0f)
                 return null;
 
-            var roll = UnityEngine.Random.Range(0f, totalChance);
+            float roll = UnityEngine.Random.Range(0f, totalChance);
 
-            foreach (var buffChance in buffSetups)
+            foreach (BuffChance buffChance in buffSetups)
             {
                 if (!buffChance.Setup || buffChance.Chance <= 0f) continue;
 

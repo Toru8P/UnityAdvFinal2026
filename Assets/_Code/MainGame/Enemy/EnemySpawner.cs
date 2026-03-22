@@ -36,6 +36,9 @@ namespace _Code.MainGame.Enemy
 
         [Header("Visual Enemies Counter")]
         [SerializeField] private TextMeshProUGUI enemiesCounterText;
+        
+        [Header("Enemies Spawn Parent")]
+        [SerializeField] private GameObject parentEnemies;
 
         private int _spawnCounter;
         private bool _continueSpawning = true;
@@ -173,6 +176,8 @@ namespace _Code.MainGame.Enemy
                 }
                 GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
+                if (parentEnemies) enemy.transform.SetParent(parentEnemies.transform);
+                
                 EnemyController controller = enemy.GetComponent<EnemyController>();
                 if (controller)
                 {
